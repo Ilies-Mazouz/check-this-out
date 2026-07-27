@@ -64,4 +64,14 @@ class Title extends Model
     {
         return $this->hasMany(GamingEntry::class);
     }
+
+    public function favouritedBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'favourites', 'title_id', 'user_id')->withTimestamps();
+    }
+
+    public function averageScore(): ?float
+    {
+        return $this->reviews()->avg('score');
+    }
 }

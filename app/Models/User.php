@@ -21,6 +21,7 @@ class User extends Authenticatable
         'email',
         'password',
         'is_admin',
+        'theme',
         'birthday',
         'bio',
         'avatar',
@@ -76,13 +77,23 @@ class User extends Authenticatable
         return $this->hasMany(NewsArticle::class);
     }
 
-    public function contactMessages(): HasMany
-    {
-        return $this->hasMany(ContactMessage::class, 'submitted_by');
-    }
-
     public function blockedUsers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'blocked_users', 'user_id', 'blocked_user_id');
+    }
+
+    public function titleSubmissions(): HasMany
+    {
+        return $this->hasMany(Title::class, 'submitted_by');
+    }
+
+    public function favourites(): BelongsToMany
+    {
+        return $this->belongsToMany(Title::class, 'favourites', 'user_id', 'title_id')->withTimestamps();
+    }
+
+    public function hasBlocked(User $user): bool
+    {
+        return $this->blockedUsers()->where('blocked_user_id', $user->id)->exists();
     }
 }

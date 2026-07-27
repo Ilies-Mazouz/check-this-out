@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('titles', function (Blueprint $table) {
             $table->id();
-            $table->enum('api_source', ['tmdb', 'jikan', 'rawg']);
-            $table->string('api_id');
+            $table->enum('api_source', ['tmdb', 'jikan', 'rawg', 'manual']);
+            $table->string('api_id')->nullable();
             $table->enum('type', ['movie', 'series', 'anime', 'game']);
             $table->string('title');
             $table->string('slug')->unique();

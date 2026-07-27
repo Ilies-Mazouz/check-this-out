@@ -65,7 +65,10 @@
             <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
 
             @if ($user->avatar)
-                <p class="mt-2 text-sm text-gray-600">{{ __('Current avatar:') }} {{ $user->avatar }}</p>
+                <div class="mt-3 flex items-center gap-4">
+                    <img src="{{ asset('storage/'.$user->avatar) }}" alt="{{ $user->username }} avatar" class="h-16 w-16 rounded-2xl object-cover" />
+                    <p class="text-sm text-gray-600">{{ __('Current avatar:') }} {{ $user->avatar }}</p>
+                </div>
             @endif
         </div>
 
