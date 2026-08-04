@@ -8,10 +8,11 @@
             <p class="mt-4 max-w-3xl text-lg leading-8" style="color: var(--theme-muted);">Track what you are watching, playing, and discovering across Check This Out.</p>
         </div>
 
-        <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="mt-8 grid gap-6 sm:grid-cols-2 md:grid-cols-4">
             @foreach ([
                 ['label' => 'My Watchlist', 'route' => route('watchlist.mine')],
                 ['label' => 'My Gaming List', 'route' => route('gaming.mine')],
+                ['label' => 'My Favourites', 'route' => route('favourites.mine')],
                 ['label' => 'Notifications', 'route' => route('notifications.index')],
             ] as $card)
                 <a href="{{ $card['route'] }}" class="block rounded-[1.75rem] border p-6 transition-all duration-300 hover:-translate-y-1" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">

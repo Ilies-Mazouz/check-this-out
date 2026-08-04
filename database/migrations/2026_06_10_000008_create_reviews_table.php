@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('title_id')->constrained('titles')->cascadeOnDelete();
-            $table->unsignedTinyInteger('score');
+            $table->foreignId('parent_id')->nullable()->constrained('reviews')->nullOnDelete();
+            $table->unsignedTinyInteger('depth')->default(1);
+            $table->unsignedTinyInteger('score')->nullable();
             $table->text('body');
             $table->timestamps();
-
-            $table->unique(['user_id', 'title_id']);
         });
     }
 

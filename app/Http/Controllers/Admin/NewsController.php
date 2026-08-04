@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\NewsArticle;
+use App\Support\ImageResizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -33,7 +34,7 @@ class NewsController extends Controller
         $article->slug = $this->uniqueSlug($validated['title']);
 
         if ($request->hasFile('cover_image')) {
-            $article->cover_image = $request->file('cover_image')->store('news', 'public');
+            $article->cover_image = ImageResizer::storeUploaded($request->file('cover_image'), 'news');
         }
 
         $article->save();
@@ -61,7 +62,7 @@ class NewsController extends Controller
                 Storage::disk('public')->delete($news->cover_image);
             }
 
-            $news->cover_image = $request->file('cover_image')->store('news', 'public');
+            $news->cover_image = ImageResizer::storeUploaded($request->file('cover_image'), 'news');
         }
 
         $news->save();

@@ -13,6 +13,7 @@ class NewsArticle extends Model
         'slug',
         'body',
         'cover_image',
+        'source_url',
         'published_at',
     ];
 

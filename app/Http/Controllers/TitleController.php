@@ -17,9 +17,9 @@ class TitleController extends Controller
             ->where('status', 'accepted')
             ->when($type, fn ($query) => $query->where('type', $type))
             ->when($search, fn ($query) => $query->where('title', 'like', "%{$search}%"))
-            ->withCount('reviews')
+            ->withCount(['reviews as reviews_count' => fn ($query) => $query->whereNull('parent_id')])
             ->orderByDesc('created_at')
-            ->paginate(12)
+            ->paginate(9)
             ->withQueryString();
 
         return view('catalogue.index', [
@@ -36,8 +36,7 @@ class TitleController extends Controller
         $title->load([
             'genres',
             'platforms',
-            'reviews' => fn ($query) => $query->with('user')->latest(),
-            'comments' => fn ($query) => $query->whereNull('parent_id')->with(['user', 'likes', 'replies.user', 'replies.likes', 'replies.replies.user', 'replies.replies.likes'])->latest(),
+            'reviews' => fn ($query) => $query->whereNull('parent_id')->with(['user', 'likes', 'replies.user', 'replies.likes', 'replies.replies.user', 'replies.replies.likes'])->latest(),
         ]);
 
         $blockedIds = auth()->check() ? auth()->user()->blockedUsers()->pluck('users.id') : collect();

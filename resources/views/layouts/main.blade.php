@@ -131,7 +131,15 @@
                             </a>
                         @else
                             <div class="hidden items-center gap-3 md:flex">
-                                <div class="flex items-center gap-3 rounded-2xl px-3 py-1.5 theme-surface">
+                                <a href="{{ route('notifications.index') }}" class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl text-lg transition-all duration-300 hover:bg-[color:var(--theme-accent)]/10" aria-label="Notifications">
+                                    🔔
+                                    @php $unreadCount = auth()->user()->notifications()->whereNull('read_at')->count(); @endphp
+                                    @if ($unreadCount > 0)
+                                        <span class="absolute -right-0.5 -top-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold" style="background: var(--theme-accent); color: var(--theme-bg);">{{ $unreadCount }}</span>
+                                    @endif
+                                </a>
+
+                                <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 rounded-2xl px-3 py-1.5 theme-surface transition-all duration-300 hover:opacity-80">
                                     @if (auth()->user()->avatar)
                                         <img src="{{ asset('storage/'.auth()->user()->avatar) }}" alt="{{ auth()->user()->username }}" class="h-8 w-8 rounded-full object-cover" />
                                     @else
@@ -140,17 +148,7 @@
                                         </div>
                                     @endif
                                     <span class="text-sm font-semibold text-[color:var(--theme-text)]">{{ auth()->user()->username }}</span>
-                                </div>
-
-                                <a href="{{ route('notifications.index') }}" class="text-sm font-semibold uppercase tracking-[0.04em] text-[color:var(--theme-text)]/90 transition-all duration-300 hover:text-[color:var(--theme-accent)]">
-                                    Notifications
-                                    @php $unreadCount = auth()->user()->notifications()->whereNull('read_at')->count(); @endphp
-                                    @if ($unreadCount > 0)
-                                        <span class="ml-1 inline-flex h-5 w-5 items-center justify-center rounded-full text-xs" style="background: var(--theme-accent); color: var(--theme-bg);">{{ $unreadCount }}</span>
-                                    @endif
                                 </a>
-
-                                <a href="{{ route('profile.edit') }}" class="text-sm font-semibold uppercase tracking-[0.04em] text-[color:var(--theme-text)]/90 transition-all duration-300 hover:text-[color:var(--theme-accent)]">Profile</a>
 
                                 @if (auth()->user()->is_admin)
                                     <a href="{{ route('admin.dashboard') }}" class="text-sm font-semibold uppercase tracking-[0.04em] text-[color:var(--theme-text)]/90 transition-all duration-300 hover:text-[color:var(--theme-accent)]">Admin Panel</a>
@@ -177,6 +175,12 @@
                         <a href="#" class="transition-all duration-300 hover:text-[color:var(--theme-accent)]">Privacy</a>
                         <a href="#" class="transition-all duration-300 hover:text-[color:var(--theme-accent)]">Terms</a>
                     </div>
+                </div>
+                <div class="mx-auto mt-4 flex max-w-7xl flex-col items-center gap-2 text-center text-xs text-[color:var(--theme-muted)] sm:flex-row sm:text-left">
+                    <a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer" class="shrink-0 opacity-70 transition-opacity duration-300 hover:opacity-100">
+                        <img src="{{ asset('images/tmdb-logo.svg') }}" alt="TMDB" class="h-4 w-auto" />
+                    </a>
+                    <p>This product uses the TMDB API but is not endorsed, certified, or otherwise approved by TMDB. Anime data from <a href="https://anilist.co/" target="_blank" rel="noopener noreferrer" class="underline hover:no-underline">AniList</a>. Game data from <a href="https://www.igdb.com/" target="_blank" rel="noopener noreferrer" class="underline hover:no-underline">IGDB</a>. News aggregated from their original publishers, linked on each article.</p>
                 </div>
             </footer>
         </div>

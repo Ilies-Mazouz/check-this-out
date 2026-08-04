@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Concerns\ImportsExternalTitles;
 use App\Http\Controllers\Controller;
 use App\Models\Genre;
 use App\Models\Notification;
 use App\Models\Platform;
 use App\Models\Title;
+use App\Services\AniListService;
+use App\Services\IgdbService;
+use App\Services\TmdbService;
+use App\Support\ImageResizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -14,6 +19,8 @@ use Illuminate\View\View;
 
 class TitleController extends Controller
 {
+    use ImportsExternalTitles;
+
     public function index(Request $request): View
     {
         $status = $request->string('status', 'pending')->toString();
@@ -25,7 +32,11 @@ class TitleController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.titles.index', ['titles' => $titles, 'status' => $status]);
+        return view('admin.titles.index', [
+            'titles' => $titles,
+            'status' => $status,
+            'importGenres' => Genre::orderBy('name')->pluck('name')->unique()->values(),
+        ]);
     }
 
     public function create(): View
@@ -36,7 +47,7 @@ class TitleController extends Controller
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, TmdbService $tmdb, AniListService $aniList, IgdbService $igdb): RedirectResponse
     {
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -48,20 +59,40 @@ class TitleController extends Controller
             'genres.*' => ['exists:genres,id'],
             'platforms' => ['nullable', 'array'],
             'platforms.*' => ['exists:platforms,id'],
+            'external_id' => ['nullable', 'string'],
         ]);
+
+        $apiSource = 'manual';
+        $apiId = null;
+        $titleName = $validated['title'];
+        $synopsis = $validated['synopsis'] ?? null;
+        $releaseDate = $validated['release_date'] ?? null;
+        $importedCoverImage = null;
+
+        if ($imported = $this->importExternalTitle($validated['type'], $validated['external_id'] ?? null, $tmdb, $aniList, $igdb)) {
+            $apiSource = $imported['source'];
+            $apiId = $validated['external_id'];
+            $titleName = $imported['title'];
+            $synopsis = $imported['synopsis'];
+            $releaseDate = $imported['release_date'];
+            $importedCoverImage = $imported['cover_image'];
+        }
 
         $title = new Title([
-            'api_source' => 'manual',
+            'api_source' => $apiSource,
+            'api_id' => $apiId,
             'type' => $validated['type'],
-            'title' => $validated['title'],
-            'synopsis' => $validated['synopsis'] ?? null,
-            'release_date' => $validated['release_date'] ?? null,
+            'title' => $titleName,
+            'synopsis' => $synopsis,
+            'release_date' => $releaseDate,
             'status' => 'accepted',
         ]);
-        $title->slug = $this->uniqueSlug($validated['title']);
+        $title->slug = $this->uniqueSlug($titleName);
 
         if ($request->hasFile('cover_image')) {
-            $title->cover_image = $request->file('cover_image')->store('titles', 'public');
+            $title->cover_image = ImageResizer::storeUploaded($request->file('cover_image'), 'titles');
+        } elseif ($importedCoverImage) {
+            $title->cover_image = $importedCoverImage;
         }
 
         $title->save();

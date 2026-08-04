@@ -1,10 +1,10 @@
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-900">
+        <h2 class="text-lg font-medium">
             {{ __('Profile Information') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600">
+        <p class="mt-1 text-sm" style="color: var(--theme-muted);">
             {{ __("Update your account's profile information, avatar, and email address.") }}
         </p>
     </header>
@@ -30,10 +30,10 @@
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div>
-                    <p class="text-sm mt-2 text-gray-800">
+                    <p class="text-sm mt-2" style="color: var(--theme-text);">
                         {{ __('Your email address is unverified.') }}
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <button form="send-verification" class="underline text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" style="color: var(--theme-accent);">
                             {{ __('Click here to re-send the verification email.') }}
                         </button>
                     </p>
@@ -55,21 +55,21 @@
 
         <div>
             <x-input-label for="bio" :value="__('Bio')" />
-            <textarea id="bio" name="bio" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('bio', $user->bio) }}</textarea>
+            <textarea id="bio" name="bio" rows="4" class="mt-1 block w-full rounded-xl border px-4 py-2 text-sm" style="border-color: var(--theme-border); background: color-mix(in srgb, var(--theme-surface) 92%, transparent); color: var(--theme-text);">{{ old('bio', $user->bio) }}</textarea>
             <x-input-error class="mt-2" :messages="$errors->get('bio')" />
         </div>
 
         <div>
             <x-input-label for="avatar" :value="__('Avatar')" />
-            <input id="avatar" name="avatar" type="file" accept="image/*" class="mt-1 block w-full text-sm text-gray-900 file:mr-4 file:rounded-md file:border-0 file:bg-gray-100 file:px-4 file:py-2 file:text-sm file:font-medium file:text-gray-700 hover:file:bg-gray-200" />
+            <input id="avatar" name="avatar" type="file" accept="image/*" class="mt-1 block w-full text-sm file:mr-4 file:rounded-md file:border-0 file:bg-gray-100 file:px-4 file:py-2 file:text-sm file:font-medium file:text-gray-700 hover:file:bg-gray-200" style="color: var(--theme-text);" />
             <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
+            <input type="hidden" id="remove-avatar-input" name="remove_avatar" value="0" />
 
-            @if ($user->avatar)
-                <div class="mt-3 flex items-center gap-4">
-                    <img src="{{ asset('storage/'.$user->avatar) }}" alt="{{ $user->username }} avatar" class="h-16 w-16 rounded-2xl object-cover" />
-                    <p class="text-sm text-gray-600">{{ __('Current avatar:') }} {{ $user->avatar }}</p>
-                </div>
-            @endif
+            <div class="mt-3 flex items-center gap-4">
+                <img id="avatar-preview" src="{{ $user->avatar ? asset('storage/'.$user->avatar) : '' }}" alt="{{ $user->username }} avatar" class="h-16 w-16 rounded-2xl object-cover {{ $user->avatar ? '' : 'hidden' }}" />
+                <p id="avatar-preview-label" class="text-sm" style="color: var(--theme-muted);">{{ $user->avatar ? __('Current avatar') : '' }}</p>
+                <button type="button" id="remove-avatar-btn" class="text-sm underline {{ $user->avatar ? '' : 'hidden' }}" style="color: var(--theme-muted);">{{ __('Remove avatar') }}</button>
+            </div>
         </div>
 
         <div class="flex items-center gap-4">
@@ -81,9 +81,49 @@
                     x-show="show"
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
+                    class="text-sm"
+                    style="color: var(--theme-muted);"
                 >{{ __('Saved.') }}</p>
             @endif
         </div>
     </form>
 </section>
+
+<script>
+    (() => {
+        const input = document.getElementById('avatar');
+        const preview = document.getElementById('avatar-preview');
+        const label = document.getElementById('avatar-preview-label');
+        const removeInput = document.getElementById('remove-avatar-input');
+        const removeBtn = document.getElementById('remove-avatar-btn');
+        const hadAvatar = {{ $user->avatar ? 'true' : 'false' }};
+
+        input.addEventListener('change', () => {
+            const file = input.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            removeInput.value = '0';
+            removeBtn.classList.toggle('hidden', !hadAvatar);
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                preview.src = event.target.result;
+                preview.classList.remove('hidden');
+                label.textContent = 'New avatar (not saved yet)';
+            };
+            reader.readAsDataURL(file);
+        });
+
+        removeBtn.addEventListener('click', () => {
+            input.value = '';
+            removeInput.value = '1';
+            preview.src = '';
+            preview.classList.add('hidden');
+            label.textContent = 'Avatar will be removed on save';
+            removeBtn.classList.add('hidden');
+        });
+    })();
+</script>

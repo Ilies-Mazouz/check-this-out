@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\Admin\ContactMessageController as AdminContactMessageController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\NewsImportController;
 use App\Http\Controllers\Admin\TitleController as AdminTitleController;
+use App\Http\Controllers\Admin\TitleImportController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\BlockController;
-use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FavouriteController;
@@ -20,10 +22,15 @@ use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\TitleController;
 use App\Http\Controllers\TitleSubmissionController;
 use App\Http\Controllers\WatchlistController;
+use App\Models\NewsArticle;
+use App\Models\Title;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome', [
+        'latestTitles' => Title::where('status', 'accepted')->latest()->take(8)->get(),
+        'latestArticles' => NewsArticle::latest('published_at')->take(3)->get(),
+    ]);
 });
 
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
@@ -46,6 +53,7 @@ Route::get('/catalogue', [TitleController::class, 'index'])->name('catalogue');
 Route::middleware('auth')->group(function () {
     Route::get('/catalogue/submit', [TitleSubmissionController::class, 'create'])->name('titles.submit');
     Route::post('/catalogue/submit', [TitleSubmissionController::class, 'store'])->name('titles.submit.store');
+    Route::get('/catalogue/submit/search', [TitleSubmissionController::class, 'search'])->name('titles.submit.search');
 });
 
 Route::get('/catalogue/{title:slug}', [TitleController::class, 'show'])->name('titles.show');
@@ -53,11 +61,8 @@ Route::get('/catalogue/{title:slug}', [TitleController::class, 'show'])->name('t
 Route::middleware('auth')->group(function () {
     Route::post('/catalogue/{title:slug}/reviews', [ReviewController::class, 'store'])->name('titles.reviews.store');
     Route::delete('/catalogue/{title:slug}/reviews/{review}', [ReviewController::class, 'destroy'])->name('titles.reviews.destroy');
-
-    Route::post('/catalogue/{title:slug}/comments', [CommentController::class, 'store'])->name('titles.comments.store');
-    Route::delete('/catalogue/{title:slug}/comments/{comment}', [CommentController::class, 'destroy'])->name('titles.comments.destroy');
-    Route::post('/catalogue/{title:slug}/comments/{comment}/like', [CommentController::class, 'like'])->name('titles.comments.like');
-    Route::delete('/catalogue/{title:slug}/comments/{comment}/like', [CommentController::class, 'unlike'])->name('titles.comments.unlike');
+    Route::post('/catalogue/{title:slug}/reviews/{review}/like', [ReviewController::class, 'like'])->name('titles.reviews.like');
+    Route::delete('/catalogue/{title:slug}/reviews/{review}/like', [ReviewController::class, 'unlike'])->name('titles.reviews.unlike');
 
     Route::post('/catalogue/{title:slug}/watchlist', [WatchlistController::class, 'update'])->name('titles.watchlist.update');
     Route::delete('/catalogue/{title:slug}/watchlist', [WatchlistController::class, 'destroy'])->name('titles.watchlist.destroy');
@@ -70,6 +75,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/my/watchlist', [WatchlistController::class, 'mine'])->name('watchlist.mine');
     Route::get('/my/gaming-list', [GamingEntryController::class, 'mine'])->name('gaming.mine');
+    Route::get('/my/favourites', [FavouriteController::class, 'mine'])->name('favourites.mine');
 
     Route::post('/users/{user}/block', [BlockController::class, 'store'])->name('users.block');
     Route::delete('/users/{user}/block', [BlockController::class, 'destroy'])->name('users.block.destroy');
@@ -85,11 +91,12 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/news', [AdminNewsController::class, 'index'])->name('news.index');
+    Route::post('/news/import/start', [NewsImportController::class, 'start'])->name('news.import.start');
+    Route::post('/news/import/{session}/step', [NewsImportController::class, 'step'])->name('news.import.step');
+    Route::post('/news/import/{session}/cancel', [NewsImportController::class, 'cancel'])->name('news.import.cancel');
     Route::get('/news/create', [AdminNewsController::class, 'create'])->name('news.create');
     Route::post('/news', [AdminNewsController::class, 'store'])->name('news.store');
     Route::get('/news/{news}/edit', [AdminNewsController::class, 'edit'])->name('news.edit');
@@ -110,6 +117,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::patch('/titles/{title}/approve', [AdminTitleController::class, 'approve'])->name('titles.approve');
     Route::post('/titles/{title}/reject', [AdminTitleController::class, 'reject'])->name('titles.reject');
     Route::delete('/titles/{title}', [AdminTitleController::class, 'destroy'])->name('titles.destroy');
+
+    Route::post('/titles/import/start', [TitleImportController::class, 'start'])->name('titles.import.start');
+    Route::post('/titles/import/{session}/step', [TitleImportController::class, 'step'])->name('titles.import.step');
+    Route::post('/titles/import/{session}/cancel', [TitleImportController::class, 'cancel'])->name('titles.import.cancel');
 
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');

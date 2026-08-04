@@ -2,6 +2,8 @@
 
 @section('content')
     <div class="mx-auto max-w-xl space-y-6">
+        <a href="{{ route('admin.users.index') }}" class="inline-flex items-center gap-1 text-sm font-semibold uppercase tracking-[0.04em] transition-all duration-300 hover:text-[color:var(--theme-accent)]" style="color: var(--theme-muted);">&larr; Back to Users</a>
+
         <div>
             <p class="text-sm font-bold uppercase tracking-[0.35em]" style="color: var(--theme-muted);">Admin</p>
             <h2 class="mt-2 font-[Bebas_Neue] text-4xl uppercase tracking-[0.18em]">New User</h2>
@@ -24,7 +26,7 @@
 
             <div>
                 <x-input-label for="password" value="Password" />
-                <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" required minlength="8" />
+                <x-password-input id="password" name="password" class="mt-1" required minlength="8" />
                 <x-input-error class="mt-2" :messages="$errors->get('password')" />
             </div>
 

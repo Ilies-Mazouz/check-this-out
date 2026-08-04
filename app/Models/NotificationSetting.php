@@ -9,13 +9,13 @@ class NotificationSetting extends Model
 {
     protected $fillable = [
         'user_id',
-        'notify_on_comment_reply',
+        'notify_on_review_reply',
     ];
 
     protected function casts(): array
     {
         return [
-            'notify_on_comment_reply' => 'boolean',
+            'notify_on_review_reply' => 'boolean',
         ];
     }
 

@@ -50,11 +50,6 @@ class Title extends Model
         return $this->hasMany(Review::class);
     }
 
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class);
-    }
-
     public function watchlistEntries(): HasMany
     {
         return $this->hasMany(WatchlistEntry::class);
@@ -72,6 +67,29 @@ class Title extends Model
 
     public function averageScore(): ?float
     {
-        return $this->reviews()->avg('score');
+        return $this->reviews()->whereNull('parent_id')->avg('score');
+    }
+
+    public function sourceLabel(): ?string
+    {
+        return match ($this->api_source) {
+            'tmdb' => 'TMDB',
+            'anilist' => 'AniList',
+            'igdb' => 'IGDB',
+            default => null,
+        };
+    }
+
+    public function sourceUrl(): ?string
+    {
+        return match ($this->api_source) {
+            'tmdb' => $this->type === 'movie'
+                ? "https://www.themoviedb.org/movie/{$this->api_id}"
+                : "https://www.themoviedb.org/tv/{$this->api_id}",
+            'anilist' => "https://anilist.co/anime/{$this->api_id}",
+            // IGDB's public site is keyed by slug, not the numeric API id we
+            // store — no reliable link to build without an extra API call.
+            default => null,
+        };
     }
 }

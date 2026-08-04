@@ -45,7 +45,7 @@ class RegisteredUserController extends Controller
 
         NotificationSetting::create([
             'user_id' => $user->id,
-            'notify_on_comment_reply' => true,
+            'notify_on_review_reply' => true,
         ]);
 
         event(new Registered($user));

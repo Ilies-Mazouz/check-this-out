@@ -27,14 +27,10 @@
         @if ($titles->isEmpty())
             <p class="mt-10 text-lg" style="color: var(--theme-muted);">No titles found yet.</p>
         @else
-            <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($titles as $catalogueTitle)
                     <a href="{{ route('titles.show', $catalogueTitle) }}" class="group overflow-hidden rounded-[1.5rem] border transition-all duration-300 hover:-translate-y-1" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
-                        @if ($catalogueTitle->cover_image)
-                            <img src="{{ asset('storage/'.$catalogueTitle->cover_image) }}" alt="{{ $catalogueTitle->title }}" class="h-56 w-full object-cover" />
-                        @else
-                            <div class="flex h-56 w-full items-center justify-center border-b text-4xl" style="border-color: var(--theme-border);">🎬</div>
-                        @endif
+                        <x-cover-image :src="$catalogueTitle->cover_image" :alt="$catalogueTitle->title" :icon="['movie' => '🎬', 'series' => '📺', 'anime' => '🎌', 'game' => '🎮'][$catalogueTitle->type] ?? '🎬'" class="h-56 w-full object-cover" />
                         <div class="p-4">
                             <span class="text-xs font-semibold uppercase tracking-[0.15em]" style="color: var(--theme-accent);">{{ ucfirst($catalogueTitle->type) }}</span>
                             <h2 class="mt-1 font-semibold transition-all duration-300 group-hover:text-[color:var(--theme-accent)]">{{ $catalogueTitle->title }}</h2>

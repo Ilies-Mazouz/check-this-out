@@ -20,8 +20,8 @@
                 <form method="POST" action="{{ route('notification-settings.update') }}" class="mt-4 space-y-4">
                     @csrf
                     <label class="flex items-center gap-3 text-sm font-medium">
-                        <input type="checkbox" name="notify_on_comment_reply" value="1" class="rounded" {{ ($user->notificationSetting->notify_on_comment_reply ?? true) ? 'checked' : '' }} />
-                        Notify me when someone replies to my comments
+                        <input type="checkbox" name="notify_on_review_reply" value="1" class="rounded" {{ ($user->notificationSetting->notify_on_review_reply ?? true) ? 'checked' : '' }} />
+                        Notify me when someone replies to my reviews
                     </label>
                     <x-primary-button>Save preference</x-primary-button>
                 </form>

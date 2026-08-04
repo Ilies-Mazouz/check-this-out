@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('notification_settings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->boolean('notify_on_comment_reply')->default(true);
+            $table->boolean('notify_on_review_reply')->default(true);
             $table->timestamps();
         });
     }

@@ -34,6 +34,7 @@ class ProfileUpdateRequest extends FormRequest
             'birthday' => ['nullable', 'date'],
             'bio' => ['nullable', 'string'],
             'avatar' => ['nullable', 'image', 'max:2048'],
+            'remove_avatar' => ['nullable', 'boolean'],
         ];
     }
 }

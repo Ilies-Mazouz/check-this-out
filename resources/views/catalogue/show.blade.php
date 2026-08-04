@@ -4,11 +4,7 @@
     <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
         <div class="grid gap-8 md:grid-cols-[280px_1fr]">
             <div>
-                @if ($title->cover_image)
-                    <img src="{{ asset('storage/'.$title->cover_image) }}" alt="{{ $title->title }}" class="w-full rounded-[1.5rem] object-cover" style="box-shadow: var(--theme-glow);" />
-                @else
-                    <div class="flex aspect-[2/3] w-full items-center justify-center rounded-[1.5rem] border text-5xl" style="border-color: var(--theme-border);">🎬</div>
-                @endif
+                <x-cover-image :src="$title->cover_image" :alt="$title->title" :icon="['movie' => '🎬', 'series' => '📺', 'anime' => '🎌', 'game' => '🎮'][$title->type] ?? '🎬'" class="aspect-[2/3] w-full rounded-[1.5rem] object-cover text-5xl" style="box-shadow: var(--theme-glow);" />
 
                 @auth
                     <div class="mt-4 space-y-2">
@@ -54,7 +50,7 @@
                         <span>{{ $title->release_date->format('Y') }}</span>
                     @endif
                     @if ($title->reviews->isNotEmpty())
-                        <span>★ {{ number_format($title->reviews->avg('score'), 1) }}/10 ({{ $title->reviews->count() }})</span>
+                        <span>★ {{ number_format($title->reviews->avg('score'), 1) }}/5 ({{ $title->reviews->count() }})</span>
                     @endif
                 </div>
 
@@ -70,68 +66,50 @@
                 @if ($title->synopsis)
                     <p class="mt-6 text-lg leading-8">{{ $title->synopsis }}</p>
                 @endif
-            </div>
-        </div>
 
-        <div class="mt-12 border-t pt-8" style="border-color: var(--theme-border);">
-            <h2 class="text-2xl font-semibold">Reviews</h2>
-
-            @auth
-                <form method="POST" action="{{ route('titles.reviews.store', $title) }}" class="mt-4 space-y-3 rounded-[1.5rem] border p-5" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border);">
-                    @csrf
-                    <div class="flex items-center gap-3">
-                        <x-input-label value="Your score" />
-                        <select name="score" required class="rounded-xl border px-3 py-2 text-sm" style="border-color: var(--theme-border); background: color-mix(in srgb, var(--theme-surface) 92%, transparent); color: var(--theme-text);">
-                            @for ($i = 1; $i <= 10; $i++)
-                                <option value="{{ $i }}" {{ $userReview?->score === $i ? 'selected' : '' }}>{{ $i }}</option>
-                            @endfor
-                        </select>
-                    </div>
-                    <textarea name="body" rows="3" required minlength="3" maxlength="3000" placeholder="Share your thoughts..." class="w-full rounded-xl border px-3 py-2 text-sm" style="border-color: var(--theme-border); background: color-mix(in srgb, var(--theme-surface) 92%, transparent); color: var(--theme-text);">{{ old('body', $userReview->body ?? '') }}</textarea>
-                    <div class="flex items-center gap-3">
-                        <x-primary-button>{{ $userReview ? 'Update review' : 'Post review' }}</x-primary-button>
-                        @if ($userReview)
-                            <form method="POST" action="{{ route('titles.reviews.destroy', [$title, $userReview]) }}" onsubmit="return confirm('Delete your review?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-sm" style="color: var(--theme-muted);">Delete</button>
-                            </form>
-                        @endif
-                    </div>
-                </form>
-            @endauth
-
-            <div class="mt-6 space-y-4">
-                @forelse ($title->reviews->whereNotIn('user_id', $blockedIds) as $review)
-                    <div class="rounded-xl border p-4" style="border-color: color-mix(in srgb, var(--theme-border) 70%, transparent);">
-                        <div class="flex items-center justify-between">
-                            <a href="{{ route('profile.show', $review->user) }}" class="text-sm font-semibold hover:underline">{{ $review->user->username }}</a>
-                            <span class="text-sm font-semibold" style="color: var(--theme-accent);">{{ $review->score }}/10</span>
-                        </div>
-                        <p class="mt-2 text-sm leading-6">{{ $review->body }}</p>
-                    </div>
-                @empty
-                    <p style="color: var(--theme-muted);">No reviews yet — be the first.</p>
-                @endforelse
+                @if ($title->sourceUrl())
+                    <p class="mt-4 text-xs" style="color: var(--theme-muted);">Data from <a href="{{ $title->sourceUrl() }}" target="_blank" rel="noopener noreferrer" class="underline hover:no-underline">{{ $title->sourceLabel() }}</a></p>
+                @endif
             </div>
         </div>
 
         <div class="mt-12 border-t pt-8" style="border-color: var(--theme-border);" x-data="{ replyTo: null }">
-            <h2 class="text-2xl font-semibold">Comments</h2>
+            <h2 class="text-2xl font-semibold">Reviews</h2>
 
             @auth
-                <form method="POST" action="{{ route('titles.comments.store', $title) }}" class="mt-4 space-y-3 rounded-[1.5rem] border p-5" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border);">
-                    @csrf
-                    <textarea name="body" rows="3" required minlength="2" maxlength="2000" placeholder="Join the discussion..." class="w-full rounded-xl border px-3 py-2 text-sm" style="border-color: var(--theme-border); background: color-mix(in srgb, var(--theme-surface) 92%, transparent); color: var(--theme-text);"></textarea>
-                    <x-primary-button>Post comment</x-primary-button>
-                </form>
+                <div class="mt-4 rounded-[1.5rem] border p-5" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border);">
+                    <form method="POST" action="{{ route('titles.reviews.store', $title) }}" class="space-y-3">
+                        @csrf
+                        <div x-data="{ score: {{ $userReview->score ?? 'null' }}, hover: null }">
+                            <input type="hidden" name="score" :value="score ?? ''">
+                            <x-input-label value="Your rating (optional)" />
+                            <div class="mt-1 flex items-center gap-1">
+                                <template x-for="i in 5" :key="i">
+                                    <button type="button" @click="score = (score === i ? null : i)" @mouseenter="hover = i" @mouseleave="hover = null" class="text-3xl leading-none transition-all duration-150" :style="`color: ${(hover ?? score) >= i ? 'var(--theme-accent)' : 'var(--theme-border)'}`">★</button>
+                                </template>
+                                <button type="button" @click="score = null" x-show="score" class="ml-2 text-xs underline" style="color: var(--theme-muted);">Clear</button>
+                                <span class="ml-2 text-sm" style="color: var(--theme-muted);" x-text="score ? score + '/5' : 'No rating'"></span>
+                            </div>
+                        </div>
+                        <textarea name="body" rows="3" required minlength="3" maxlength="3000" placeholder="Share your thoughts..." class="w-full rounded-xl border px-3 py-2 text-sm" style="border-color: var(--theme-border); background: color-mix(in srgb, var(--theme-surface) 92%, transparent); color: var(--theme-text);">{{ old('body', $userReview->body ?? '') }}</textarea>
+                        <x-primary-button>{{ $userReview ? 'Update review' : 'Post review' }}</x-primary-button>
+                    </form>
+
+                    @if ($userReview)
+                        <form method="POST" action="{{ route('titles.reviews.destroy', [$title, $userReview]) }}" onsubmit="return confirm('Delete your review?');" class="mt-3">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-sm" style="color: var(--theme-muted);">Delete your review</button>
+                        </form>
+                    @endif
+                </div>
             @endauth
 
             <div class="mt-6 space-y-4">
-                @forelse ($title->comments->whereNotIn('user_id', $blockedIds) as $comment)
-                    @include('catalogue._comment', ['comment' => $comment, 'title' => $title, 'blockedIds' => $blockedIds])
+                @forelse ($title->reviews->whereNotIn('user_id', $blockedIds) as $review)
+                    @include('catalogue._review', ['review' => $review, 'title' => $title, 'blockedIds' => $blockedIds])
                 @empty
-                    <p style="color: var(--theme-muted);">No comments yet.</p>
+                    <p style="color: var(--theme-muted);">No reviews yet — be the first.</p>
                 @endforelse
             </div>
         </div>

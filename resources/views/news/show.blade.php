@@ -10,12 +10,14 @@
             <p class="mt-2 text-sm" style="color: var(--theme-muted);">By {{ $article->user->username }}</p>
         @endif
 
-        @if ($article->cover_image)
-            <img src="{{ asset('storage/'.$article->cover_image) }}" alt="{{ $article->title }}" class="mt-8 w-full rounded-[1.75rem] object-cover" style="max-height: 420px;" />
-        @endif
+        <x-cover-image :src="$article->cover_image" :alt="$article->title" icon="📰" class="mt-8 h-[420px] w-full rounded-[1.75rem] object-cover text-6xl" />
 
         <div class="prose prose-invert mt-8 max-w-none text-lg leading-8" style="color: var(--theme-text);">
             {!! nl2br(e($article->body)) !!}
         </div>
+
+        @if ($article->source_url)
+            <p class="mt-8 border-t pt-4 text-sm" style="border-color: var(--theme-border); color: var(--theme-muted);">Originally reported at <a href="{{ $article->source_url }}" target="_blank" rel="noopener noreferrer" class="underline hover:no-underline">{{ parse_url($article->source_url, PHP_URL_HOST) }}</a></p>
+        @endif
     </div>
 @endsection

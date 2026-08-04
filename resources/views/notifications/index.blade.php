@@ -18,8 +18,8 @@
                                 <p class="mt-1 text-sm" style="color: var(--theme-muted);">Reason: {{ $notification->data['rejection_reason'] }}</p>
                             @endif
                             @break
-                        @case('comment_reply')
-                            <p><span class="font-semibold">{{ $notification->data['from_username'] }}</span> replied to your comment on <a href="{{ route('titles.show', ['title' => $notification->data['title_slug']]) }}" class="font-semibold hover:underline">{{ $notification->data['title_name'] }}</a>.</p>
+                        @case('review_reply')
+                            <p><span class="font-semibold">{{ $notification->data['from_username'] }}</span> replied to your review on <a href="{{ route('titles.show', ['title' => $notification->data['title_slug']]) }}" class="font-semibold hover:underline">{{ $notification->data['title_name'] }}</a>.</p>
                             @break
                         @default
                             <p>{{ $notification->type }}</p>

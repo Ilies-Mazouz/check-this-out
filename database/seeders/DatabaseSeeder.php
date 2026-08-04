@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             GenreSeeder::class,
             PlatformSeeder::class,
             FaqSeeder::class,
+            NewsSeeder::class,
+            TitleSeeder::class,
         ]);
     }
 }
