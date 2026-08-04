@@ -10,7 +10,9 @@
             <p class="mt-2 text-sm" style="color: var(--theme-muted);">By {{ $article->user->username }}</p>
         @endif
 
-        <x-cover-image :src="$article->cover_image" :alt="$article->title" icon="📰" class="mt-8 h-[420px] w-full rounded-[1.75rem] object-cover text-6xl" />
+        @if ($article->cover_image)
+            <x-cover-image :src="$article->cover_image" :alt="$article->title" icon="📰" class="mt-8 h-[420px] w-full rounded-[1.75rem] object-cover text-6xl" />
+        @endif
 
         <div class="prose prose-invert mt-8 max-w-none text-lg leading-8" style="color: var(--theme-text);">
             {!! nl2br(e($article->body)) !!}
