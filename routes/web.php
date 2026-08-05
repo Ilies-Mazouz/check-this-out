@@ -10,9 +10,11 @@ use App\Http\Controllers\Admin\TitleImportController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\BlockController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\GamingEntryController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationSettingController;
@@ -22,16 +24,9 @@ use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\TitleController;
 use App\Http\Controllers\TitleSubmissionController;
 use App\Http\Controllers\WatchlistController;
-use App\Models\NewsArticle;
-use App\Models\Title;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome', [
-        'latestTitles' => Title::where('status', 'accepted')->latest()->take(8)->get(),
-        'latestArticles' => NewsArticle::latest('published_at')->take(3)->get(),
-    ]);
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{news:slug}', [NewsController::class, 'show'])->name('news.show');
@@ -43,9 +38,7 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 
 Route::get('/u/{user:username}', [ProfileController::class, 'show'])->name('profile.show');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 // Catalogue (public browse, auth-gated actions)
 Route::get('/catalogue', [TitleController::class, 'index'])->name('catalogue');

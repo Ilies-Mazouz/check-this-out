@@ -4,12 +4,12 @@
     <div class="space-y-6">
         <div>
             <p class="text-sm font-bold uppercase tracking-[0.35em]" style="color: var(--theme-muted);">Admin</p>
-            <h2 class="mt-2 font-[Bebas_Neue] text-4xl uppercase tracking-[0.18em]">Contact Messages</h2>
+            <h2 class="mt-2 font-bold font-[Fredoka] text-4xl">Contact Messages</h2>
         </div>
 
         <div class="space-y-4">
             @forelse ($messages as $message)
-                <div class="rounded-[1.75rem] border p-6" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+                <div class="rounded-tl-[1.75rem] rounded-tr-[1.75rem] rounded-br-[1.75rem] rounded-bl-md border p-6" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
                     <div class="flex flex-wrap items-start justify-between gap-3">
                         <div>
                             <p class="text-xs font-semibold uppercase tracking-[0.2em]" style="color: var(--theme-muted);">{{ $message->created_at->format('M j, Y H:i') }}</p>

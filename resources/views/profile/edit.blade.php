@@ -2,19 +2,19 @@
 
 @section('content')
     <div class="mx-auto max-w-7xl space-y-6 px-4 py-12 sm:px-6 lg:px-8">
-        <div class="rounded-[2rem] border p-6 sm:p-8" style="background: color-mix(in srgb, var(--theme-surface) 94%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+        <div class="rounded-tl-[2rem] rounded-tr-[2rem] rounded-br-[2rem] rounded-bl-md border p-6 sm:p-8" style="background: color-mix(in srgb, var(--theme-surface) 94%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
             <div class="max-w-2xl">
                 @include('profile.partials.update-profile-information-form')
             </div>
         </div>
 
-        <div class="rounded-[2rem] border p-6 sm:p-8" style="background: color-mix(in srgb, var(--theme-surface) 94%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+        <div class="rounded-tl-[2rem] rounded-tr-[2rem] rounded-br-[2rem] rounded-bl-md border p-6 sm:p-8" style="background: color-mix(in srgb, var(--theme-surface) 94%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
             <div class="max-w-2xl">
                 @include('profile.partials.update-password-form')
             </div>
         </div>
 
-        <div class="rounded-[2rem] border p-6 sm:p-8" style="background: color-mix(in srgb, var(--theme-surface) 94%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+        <div class="rounded-tl-[2rem] rounded-tr-[2rem] rounded-br-[2rem] rounded-bl-md border p-6 sm:p-8" style="background: color-mix(in srgb, var(--theme-surface) 94%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
             <div class="max-w-2xl">
                 <h2 class="text-lg font-medium">Notification Preferences</h2>
                 <form method="POST" action="{{ route('notification-settings.update') }}" class="mt-4 space-y-4">
@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <div class="rounded-[2rem] border p-6 sm:p-8" style="background: color-mix(in srgb, var(--theme-surface) 94%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+        <div class="rounded-tl-[2rem] rounded-tr-[2rem] rounded-br-[2rem] rounded-bl-md border p-6 sm:p-8" style="background: color-mix(in srgb, var(--theme-surface) 94%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
             <div class="max-w-2xl">
                 @include('profile.partials.delete-user-form')
             </div>

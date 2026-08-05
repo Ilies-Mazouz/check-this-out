@@ -39,10 +39,6 @@ return [
         'key' => env('TMDB_API_KEY'),
     ],
 
-    'rawg' => [
-        'key' => env('RAWG_API_KEY'),
-    ],
-
     'igdb' => [
         'client_id' => env('TWITCH_CLIENT_ID'),
         'client_secret' => env('TWITCH_CLIENT_SECRET'),

@@ -5,13 +5,13 @@
         <a href="{{ route('news.index') }}" class="text-sm font-semibold uppercase tracking-[0.1em]" style="color: var(--theme-accent);">&larr; Back to news</a>
 
         <p class="mt-6 text-sm font-bold uppercase tracking-[0.35em]" style="color: var(--theme-muted);">{{ $article->published_at->format('F j, Y') }}</p>
-        <h1 class="mt-2 font-[Bebas_Neue] text-5xl uppercase tracking-[0.18em]">{{ $article->title }}</h1>
+        <h1 class="mt-2 font-bold font-[Fredoka] text-5xl">{{ $article->title }}</h1>
         @if ($article->user)
             <p class="mt-2 text-sm" style="color: var(--theme-muted);">By {{ $article->user->username }}</p>
         @endif
 
         @if ($article->cover_image)
-            <x-cover-image :src="$article->cover_image" :alt="$article->title" icon="📰" class="mt-8 h-[420px] w-full rounded-[1.75rem] object-cover text-6xl" />
+            <x-cover-image :src="$article->cover_image" :alt="$article->title" class="mt-8 h-[420px] w-full rounded-tl-[1.75rem] rounded-tr-[1.75rem] rounded-br-[1.75rem] rounded-bl-md object-cover" />
         @endif
 
         <div class="prose prose-invert mt-8 max-w-none text-lg leading-8" style="color: var(--theme-text);">

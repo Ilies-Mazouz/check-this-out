@@ -5,7 +5,7 @@
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
                 <p class="text-sm font-bold uppercase tracking-[0.35em]" style="color: var(--theme-muted);">Discover</p>
-                <h1 class="mt-2 font-[Bebas_Neue] text-5xl uppercase tracking-[0.18em]">Catalogue</h1>
+                <h1 class="mt-2 font-bold font-[Fredoka] text-5xl">Catalogue</h1>
             </div>
 
             @auth
@@ -29,8 +29,8 @@
         @else
             <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($titles as $catalogueTitle)
-                    <a href="{{ route('titles.show', $catalogueTitle) }}" class="group overflow-hidden rounded-[1.5rem] border transition-all duration-300 hover:-translate-y-1" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
-                        <x-cover-image :src="$catalogueTitle->cover_image" :alt="$catalogueTitle->title" :icon="['movie' => '🎬', 'series' => '📺', 'anime' => '🎌', 'game' => '🎮'][$catalogueTitle->type] ?? '🎬'" class="h-56 w-full object-cover" />
+                    <a href="{{ route('titles.show', $catalogueTitle) }}" class="group overflow-hidden rounded-tl-[1.5rem] rounded-tr-[1.5rem] rounded-br-[1.5rem] rounded-bl-md border transition-all duration-300 hover:-translate-y-1 {{ $loop->even ? 'hover:rotate-1' : 'hover:-rotate-1' }}" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+                        <x-cover-image :src="$catalogueTitle->cover_image" :alt="$catalogueTitle->title" class="h-56 w-full object-cover" />
                         <div class="p-4">
                             <span class="text-xs font-semibold uppercase tracking-[0.15em]" style="color: var(--theme-accent);">{{ ucfirst($catalogueTitle->type) }}</span>
                             <h2 class="mt-1 font-semibold transition-all duration-300 group-hover:text-[color:var(--theme-accent)]">{{ $catalogueTitle->title }}</h2>

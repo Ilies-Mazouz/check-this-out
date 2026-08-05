@@ -5,7 +5,7 @@
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <p class="text-sm font-bold uppercase tracking-[0.35em]" style="color: var(--theme-muted);">Admin</p>
-                <h2 class="mt-2 font-[Bebas_Neue] text-4xl uppercase tracking-[0.18em]">Manage Users</h2>
+                <h2 class="mt-2 font-bold font-[Fredoka] text-4xl">Manage Users</h2>
             </div>
             <a href="{{ route('admin.users.create') }}" class="inline-flex h-11 items-center rounded-xl border px-5 text-sm font-semibold uppercase tracking-[0.04em] transition-all duration-300" style="border-color: var(--theme-accent); color: var(--theme-accent);">+ New User</a>
         </div>
@@ -21,7 +21,7 @@
             <button type="submit" class="rounded-xl border px-4 py-2 text-sm font-semibold" style="border-color: var(--theme-border);">Search</button>
         </form>
 
-        <div class="overflow-x-auto rounded-[1.75rem] border" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+        <div class="overflow-x-auto rounded-tl-[1.75rem] rounded-tr-[1.75rem] rounded-br-[1.75rem] rounded-bl-md border" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
             <table class="w-full text-left text-sm">
                 <thead>
                     <tr class="border-b text-xs uppercase tracking-[0.15em]" style="border-color: var(--theme-border); color: var(--theme-muted);">
@@ -40,7 +40,9 @@
                             </td>
                             <td class="px-5 py-4" style="color: var(--theme-muted);">{{ $user->email }}</td>
                             <td class="px-5 py-4">
-                                @if ($user->is_admin)
+                                @if ($user->is_master_admin)
+                                    <span class="inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-semibold uppercase" style="border-color: var(--theme-accent); color: var(--theme-accent);"><x-icon name="crown" class="h-3 w-3" /> Master Admin</span>
+                                @elseif ($user->is_admin)
                                     <span class="rounded-full border px-3 py-1 text-xs font-semibold uppercase" style="border-color: var(--theme-accent); color: var(--theme-accent);">Admin</span>
                                 @else
                                     <span class="rounded-full border px-3 py-1 text-xs font-semibold uppercase" style="border-color: var(--theme-border); color: var(--theme-muted);">User</span>
@@ -48,7 +50,9 @@
                             </td>
                             <td class="px-5 py-4" style="color: var(--theme-muted);">{{ $user->created_at->format('M j, Y') }}</td>
                             <td class="px-5 py-4 text-right">
-                                @if ($user->id !== auth()->id())
+                                @if ($user->is_master_admin)
+                                    <span class="text-xs" style="color: var(--theme-muted);">Protected</span>
+                                @elseif ($user->id !== auth()->id())
                                     <form method="POST" action="{{ route('admin.users.toggle-admin', $user) }}">
                                         @csrf
                                         @method('PATCH')

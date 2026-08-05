@@ -24,12 +24,13 @@
             <form method="POST" action="{{ route($liked ? 'titles.reviews.unlike' : 'titles.reviews.like', [$title, $review]) }}">
                 @csrf
                 @if ($liked) @method('DELETE') @endif
-                <button type="submit" class="font-semibold" style="color: {{ $liked ? 'var(--theme-accent)' : 'var(--theme-muted)' }};">
-                    👍 {{ $review->likes->count() }}
+                <button type="submit" class="inline-flex items-center gap-1.5 font-semibold" style="color: {{ $liked ? 'var(--theme-accent)' : 'var(--theme-muted)' }};">
+                    <x-icon name="heart" class="h-3.5 w-3.5" style="{{ $liked ? 'fill: currentColor;' : '' }}" />
+                    {{ $review->likes->count() }}
                 </button>
             </form>
         @else
-            <span style="color: var(--theme-muted);">👍 {{ $review->likes->count() }}</span>
+            <span class="inline-flex items-center gap-1.5" style="color: var(--theme-muted);"><x-icon name="heart" class="h-3.5 w-3.5" /> {{ $review->likes->count() }}</span>
         @endauth
 
         @auth

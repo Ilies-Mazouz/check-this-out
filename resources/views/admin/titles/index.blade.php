@@ -5,12 +5,12 @@
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <p class="text-sm font-bold uppercase tracking-[0.35em]" style="color: var(--theme-muted);">Admin</p>
-                <h2 class="mt-2 font-[Bebas_Neue] text-4xl uppercase tracking-[0.18em]">Manage Titles</h2>
+                <h2 class="mt-2 font-bold font-[Fredoka] text-4xl">Manage Titles</h2>
             </div>
             <a href="{{ route('admin.titles.create') }}" class="inline-flex h-11 items-center rounded-xl border px-5 text-sm font-semibold uppercase tracking-[0.04em]" style="border-color: var(--theme-accent); color: var(--theme-accent);">+ New Title</a>
         </div>
 
-        <div class="rounded-[1.5rem] border p-5" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+        <div class="rounded-tl-[1.5rem] rounded-tr-[1.5rem] rounded-br-[1.5rem] rounded-bl-md border p-5" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
             <div class="flex items-center justify-between">
                 <h3 class="text-lg font-semibold">Import from TMDB / AniList / IGDB</h3>
                 <button type="button" id="import-toggle" class="text-sm underline" style="color: var(--theme-accent);">Show</button>
@@ -84,7 +84,7 @@
 
         <div class="space-y-4">
             @forelse ($titles as $title)
-                <div class="rounded-[1.5rem] border p-5" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+                <div class="rounded-tl-[1.5rem] rounded-tr-[1.5rem] rounded-br-[1.5rem] rounded-bl-md border p-5" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
                     <div class="flex flex-wrap items-start justify-between gap-3">
                         <div>
                             <span class="text-xs font-semibold uppercase tracking-[0.15em]" style="color: var(--theme-accent);">{{ ucfirst($title->type) }} · {{ ucfirst($title->status) }}</span>

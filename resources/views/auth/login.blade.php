@@ -2,10 +2,10 @@
 
 @section('content')
     <div class="mx-auto flex max-w-md items-center px-4 py-16 sm:px-6 lg:px-8">
-        <div class="w-full rounded-[2rem] border p-8 sm:p-10" style="background: color-mix(in srgb, var(--theme-surface) 94%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+        <div class="w-full rounded-tl-[2rem] rounded-tr-[2rem] rounded-br-[2rem] rounded-bl-md border p-8 sm:p-10" style="background: color-mix(in srgb, var(--theme-surface) 94%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
             <div class="mb-8 text-center">
                 <p class="text-sm font-bold uppercase tracking-[0.35em]" style="color: var(--theme-muted);">Welcome back</p>
-                <h1 class="mt-4 font-[Bebas_Neue] text-5xl uppercase tracking-[0.18em]">Log in</h1>
+                <h1 class="mt-4 font-bold font-[Fredoka] text-5xl">Log in</h1>
             </div>
 
             <x-auth-session-status class="mb-4" :status="session('status')" />

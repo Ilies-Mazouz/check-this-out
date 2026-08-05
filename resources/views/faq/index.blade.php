@@ -3,7 +3,7 @@
 @section('content')
     <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
         <p class="text-sm font-bold uppercase tracking-[0.35em]" style="color: var(--theme-muted);">Help</p>
-        <h1 class="mt-2 font-[Bebas_Neue] text-5xl uppercase tracking-[0.18em]">Frequently Asked Questions</h1>
+        <h1 class="mt-2 font-bold font-[Fredoka] text-5xl">Frequently Asked Questions</h1>
 
         <div class="mt-10 space-y-10">
             @forelse ($categories as $category)

@@ -3,14 +3,14 @@
 @section('content')
     <div class="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8">
         <p class="text-sm font-bold uppercase tracking-[0.35em]" style="color: var(--theme-muted);">Get in touch</p>
-        <h1 class="mt-2 font-[Bebas_Neue] text-5xl uppercase tracking-[0.18em]">Contact</h1>
+        <h1 class="mt-2 font-bold font-[Fredoka] text-5xl">Contact</h1>
         <p class="mt-4 text-lg" style="color: var(--theme-muted);">Questions, feedback, or a title you want added? Send us a message.</p>
 
         @if (session('status') === 'contact-sent')
             <p class="mt-6 rounded-xl border px-4 py-3 text-sm" style="border-color: var(--theme-accent); color: var(--theme-accent);">Thanks! Your message has been sent.</p>
         @endif
 
-        <form method="POST" action="{{ route('contact.store') }}" class="mt-8 space-y-5 rounded-[1.75rem] border p-6 sm:p-8" style="background: color-mix(in srgb, var(--theme-surface) 94%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+        <form method="POST" action="{{ route('contact.store') }}" class="mt-8 space-y-5 rounded-tl-[1.75rem] rounded-tr-[1.75rem] rounded-br-[1.75rem] rounded-bl-md border p-6 sm:p-8" style="background: color-mix(in srgb, var(--theme-surface) 94%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
             @csrf
 
             <div>

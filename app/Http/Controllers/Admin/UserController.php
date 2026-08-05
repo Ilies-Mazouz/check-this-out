@@ -59,6 +59,7 @@ class UserController extends Controller
     public function toggleAdmin(User $user): RedirectResponse
     {
         abort_if($user->id === auth()->id(), 403, 'You cannot change your own admin status.');
+        abort_if($user->is_master_admin, 403, 'The master admin\'s role cannot be revoked.');
 
         $user->update(['is_admin' => ! $user->is_admin]);
 

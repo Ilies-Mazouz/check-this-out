@@ -20,6 +20,8 @@ class UserSeeder extends Seeder
             'is_admin' => true,
         ]);
 
+        $admin->forceFill(['is_master_admin' => true])->save();
+
         NotificationSetting::create([
             'user_id' => $admin->id,
         ]);

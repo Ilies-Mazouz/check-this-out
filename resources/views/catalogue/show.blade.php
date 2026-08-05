@@ -4,7 +4,7 @@
     <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
         <div class="grid gap-8 md:grid-cols-[280px_1fr]">
             <div>
-                <x-cover-image :src="$title->cover_image" :alt="$title->title" :icon="['movie' => '🎬', 'series' => '📺', 'anime' => '🎌', 'game' => '🎮'][$title->type] ?? '🎬'" class="aspect-[2/3] w-full rounded-[1.5rem] object-cover text-5xl" style="box-shadow: var(--theme-glow);" />
+                <x-cover-image :src="$title->cover_image" :alt="$title->title" class="aspect-[2/3] w-full rounded-tl-[1.5rem] rounded-tr-[1.5rem] rounded-br-[1.5rem] rounded-bl-md object-cover" style="box-shadow: var(--theme-glow);" />
 
                 @auth
                     <div class="mt-4 space-y-2">
@@ -43,7 +43,7 @@
 
             <div>
                 <span class="text-xs font-semibold uppercase tracking-[0.2em]" style="color: var(--theme-accent);">{{ ucfirst($title->type) }}</span>
-                <h1 class="mt-2 font-[Bebas_Neue] text-5xl uppercase tracking-[0.14em]">{{ $title->title }}</h1>
+                <h1 class="mt-2 font-bold font-[Fredoka] text-5xl">{{ $title->title }}</h1>
 
                 <div class="mt-3 flex flex-wrap items-center gap-3 text-sm" style="color: var(--theme-muted);">
                     @if ($title->release_date)
@@ -77,7 +77,7 @@
             <h2 class="text-2xl font-semibold">Reviews</h2>
 
             @auth
-                <div class="mt-4 rounded-[1.5rem] border p-5" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border);">
+                <div class="mt-4 rounded-tl-[1.5rem] rounded-tr-[1.5rem] rounded-br-[1.5rem] rounded-bl-md border p-5" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border);">
                     <form method="POST" action="{{ route('titles.reviews.store', $title) }}" class="space-y-3">
                         @csrf
                         <div x-data="{ score: {{ $userReview->score ?? 'null' }}, hover: null }">

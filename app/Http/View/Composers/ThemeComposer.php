@@ -16,6 +16,7 @@ class ThemeComposer
         $view->with([
             'theme' => $this->themeService->current(auth()->user()),
             'themeOptions' => $this->themeService->options(),
+            'themeFamilies' => $this->themeService->families(),
         ]);
     }
 }

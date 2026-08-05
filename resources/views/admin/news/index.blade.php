@@ -5,7 +5,7 @@
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <p class="text-sm font-bold uppercase tracking-[0.35em]" style="color: var(--theme-muted);">Admin</p>
-                <h2 class="mt-2 font-[Bebas_Neue] text-4xl uppercase tracking-[0.18em]">Manage News</h2>
+                <h2 class="mt-2 font-bold font-[Fredoka] text-4xl">Manage News</h2>
             </div>
             <div class="flex flex-wrap gap-3">
                 <button type="button" id="news-import-toggle" class="inline-flex h-11 items-center rounded-xl border px-5 text-sm font-semibold uppercase tracking-[0.04em]" style="border-color: var(--theme-border); color: var(--theme-text);">Import from RSS</button>
@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <div id="news-import-panel" class="hidden rounded-[1.5rem] border p-5" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+        <div id="news-import-panel" class="hidden rounded-tl-[1.5rem] rounded-tr-[1.5rem] rounded-br-[1.5rem] rounded-bl-md border p-5" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
             <div class="flex items-center gap-3">
                 <button type="button" id="news-import-start-btn" class="rounded-xl px-4 py-2 text-sm font-semibold uppercase tracking-[0.04em] transition-all duration-300" style="background: var(--theme-accent); color: var(--theme-bg);">Start Import</button>
                 <button type="button" id="news-import-cancel-btn" class="hidden rounded-xl border px-4 py-2 text-sm font-semibold uppercase tracking-[0.04em]" style="border-color: var(--theme-border);">Cancel</button>
@@ -29,7 +29,7 @@
             <div id="news-import-log" class="mt-4 max-h-48 space-y-1 overflow-y-auto rounded-xl border p-3 text-xs" style="border-color: var(--theme-border);"></div>
         </div>
 
-        <div class="overflow-x-auto rounded-[1.75rem] border" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+        <div class="overflow-x-auto rounded-tl-[1.75rem] rounded-tr-[1.75rem] rounded-br-[1.75rem] rounded-bl-md border" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
             <table class="w-full text-left text-sm">
                 <thead>
                     <tr class="border-b text-xs uppercase tracking-[0.15em]" style="border-color: var(--theme-border); color: var(--theme-muted);">

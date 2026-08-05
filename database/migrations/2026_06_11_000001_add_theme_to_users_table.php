@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('theme', ['spotlight', 'matinee', 'neon_arcade', 'ember'])
-                ->default('neon_arcade')
+            $table->enum('theme', ['neon_arcade_dark', 'neon_arcade_light', 'ember_dark', 'ember_light'])
+                ->default('neon_arcade_dark')
                 ->after('avatar');
         });
     }

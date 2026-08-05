@@ -29,7 +29,7 @@ class NewsSeeder extends Seeder
             ],
             [
                 'title' => 'Pick Your Theme',
-                'body' => "Check This Out ships with four visual themes: Neon Arcade, Ember, Spotlight and Matinee. Open the palette icon in the navbar to switch between them — your choice is saved to your account.",
+                'body' => "Check This Out ships with two visual themes, Neon Arcade and Ember, each available in dark or light mode. Open the palette icon in the navbar to switch between them — your choice is saved to your account.",
                 'published_at' => now()->subDay(),
             ],
             [

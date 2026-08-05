@@ -9,7 +9,7 @@
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -21,7 +21,7 @@
             body {
                 background: var(--theme-bg);
                 color: var(--theme-text);
-                font-family: 'Outfit', sans-serif;
+                font-family: 'Space Grotesk', sans-serif;
             }
 
             .admin-shell {
@@ -49,12 +49,6 @@
     </head>
     <body style="{{ $theme['style'] }}">
         @php
-            $themeChoices = [
-                ['key' => 'neon_arcade', 'label' => 'Neon Arcade', 'swatch' => '#00f0ff'],
-                ['key' => 'ember', 'label' => 'Ember', 'swatch' => '#ff6a00'],
-                ['key' => 'spotlight', 'label' => 'Spotlight', 'swatch' => '#7c3aed'],
-                ['key' => 'matinee', 'label' => 'Matinee', 'swatch' => '#e85400'],
-            ];
             $sidebarLinks = [
                 ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 13.5V20h6v-6.5H4Zm10 0V20h6v-10h-6v3.5ZM4 4v7h6V4H4Zm10 0v7h6V4h-6Z"/></svg>'],
                 ['label' => 'News', 'route' => 'admin.news.index', 'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5h14v14H5z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>'],
@@ -68,8 +62,8 @@
         <div class="admin-shell min-h-screen">
             <div class="flex min-h-screen flex-col lg:flex-row">
                 <aside class="hidden w-[260px] shrink-0 flex-col border-r p-5 lg:flex" style="background: color-mix(in srgb, var(--theme-navbar) 96%, transparent); border-color: color-mix(in srgb, var(--theme-accent) 24%, transparent);">
-                    <a href="{{ route('dashboard') }}" class="mb-8 text-[1.7rem] font-normal tracking-[0.24em] text-[color:var(--theme-accent)]" style="font-family: 'Bebas Neue', sans-serif; text-shadow: 0 0 12px color-mix(in srgb, var(--theme-accent) 55%, transparent);">
-                        ⚡ Admin Panel
+                    <a href="{{ route('dashboard') }}" class="mb-8 flex items-center gap-2 text-[1.5rem] font-bold text-[color:var(--theme-accent)]" style="font-family: 'Fredoka', sans-serif; text-shadow: 0 0 12px color-mix(in srgb, var(--theme-accent) 55%, transparent);">
+                        <x-icon name="admin" class="h-6 w-6" /> Admin Panel
                     </a>
 
                     <nav class="space-y-2 text-sm font-medium">
@@ -83,29 +77,42 @@
                 </aside>
 
                 <div class="flex min-w-0 flex-1 flex-col">
-                    <header class="sticky top-0 z-40 h-16 border-b" style="background: {{ $theme['key'] === 'neon_arcade' ? 'rgba(8, 11, 20, 0.85)' : ($theme['key'] === 'ember' ? 'rgba(13, 8, 0, 0.85)' : ($theme['key'] === 'spotlight' ? 'rgba(245, 240, 255, 0.90)' : 'rgba(255, 248, 240, 0.90)')) }}; border-color: color-mix(in srgb, var(--theme-accent) 20%, transparent); backdrop-filter: blur(12px);">
+                    <header class="sticky top-0 z-40 h-16 border-b" style="background: var(--theme-navbar); border-color: color-mix(in srgb, var(--theme-accent) 20%, transparent); backdrop-filter: blur(12px);">
                         <div class="mx-auto flex h-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
                             <div>
                                 <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--theme-muted)]">Admin Panel</p>
-                                <h1 class="font-['Bebas_Neue'] text-[1.8rem] leading-none tracking-[0.22em]">Admin Panel</h1>
+                                <h1 class="font-bold font-['Fredoka'] text-[1.8rem] leading-none">Admin Panel</h1>
                             </div>
 
                             <div class="flex items-center gap-2 sm:gap-3">
                                 <div class="relative" data-theme-switcher>
                                     <button type="button" data-theme-toggle class="inline-flex h-10 w-10 items-center justify-center rounded-xl border text-[color:var(--theme-accent)] transition-all duration-300 hover:scale-105 hover:bg-[color:var(--theme-accent)] hover:text-[#050814]" style="border-color: color-mix(in srgb, var(--theme-accent) 70%, transparent); background: color-mix(in srgb, var(--theme-surface) 88%, transparent);" aria-label="Open theme switcher">
-                                        <span class="text-lg">🎨</span>
+                                        <x-icon name="palette" class="h-5 w-5" />
                                     </button>
 
                                     <div data-theme-menu class="absolute right-0 z-50 mt-3 hidden w-72 rounded-2xl p-3 theme-surface">
-                                        <p class="px-2 pb-3 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--theme-muted)]">Themes</p>
+                                        <p class="px-2 pb-2 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--theme-muted)]">Appearance</p>
+                                        <div class="flex gap-2 pb-3">
+                                            @foreach (['dark' => 'moon', 'light' => 'sun'] as $mode => $iconName)
+                                                <form method="POST" action="{{ route('theme.update') }}" class="flex-1">
+                                                    @csrf
+                                                    <input type="hidden" name="theme" value="{{ $theme['family'] }}_{{ $mode }}">
+                                                    <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl border py-2 text-sm font-semibold transition-all duration-300" style="border-color: {{ $theme['mode'] === $mode ? 'var(--theme-accent)' : 'var(--theme-border)' }}; color: {{ $theme['mode'] === $mode ? 'var(--theme-accent)' : 'var(--theme-text)' }};">
+                                                        <x-icon :name="$iconName" class="h-4 w-4" /> {{ ucfirst($mode) }}
+                                                    </button>
+                                                </form>
+                                            @endforeach
+                                        </div>
+
+                                        <p class="px-0 pb-2 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--theme-muted)]">Theme</p>
                                         <div class="space-y-2">
-                                            @foreach ($themeChoices as $choice)
+                                            @foreach ($themeFamilies as $familyKey => $family)
                                                 <form method="POST" action="{{ route('theme.update') }}" class="m-0">
                                                     @csrf
-                                                    <input type="hidden" name="theme" value="{{ $choice['key'] }}">
+                                                    <input type="hidden" name="theme" value="{{ $familyKey }}_{{ $theme['mode'] }}">
                                                     <button type="submit" class="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition-all duration-300 hover:bg-[color:var(--theme-accent)]/10">
-                                                        <span class="flex h-5 w-5 items-center justify-center rounded-full border-2 transition-all duration-300 {{ $theme['key'] === $choice['key'] ? 'ring-2 ring-white ring-offset-2 ring-offset-transparent' : '' }}" style="background: {{ $choice['swatch'] }}; border-color: rgba(255,255,255,0.55); box-shadow: {{ $theme['key'] === $choice['key'] ? '0 0 14px rgba(255,255,255,0.95)' : 'none' }};"></span>
-                                                        <span class="text-sm font-semibold text-[color:var(--theme-text)]">{{ $choice['label'] }}</span>
+                                                        <span class="flex h-5 w-5 items-center justify-center rounded-full border-2 transition-all duration-300 {{ $theme['family'] === $familyKey ? 'ring-2 ring-white ring-offset-2 ring-offset-transparent' : '' }}" style="background: {{ $family['swatch'] }}; border-color: rgba(255,255,255,0.55); box-shadow: {{ $theme['family'] === $familyKey ? '0 0 14px rgba(255,255,255,0.95)' : 'none' }};"></span>
+                                                        <span class="text-sm font-semibold text-[color:var(--theme-text)]">{{ $family['label'] }}</span>
                                                     </button>
                                                 </form>
                                             @endforeach

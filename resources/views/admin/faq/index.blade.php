@@ -4,14 +4,14 @@
     <div class="space-y-8">
         <div>
             <p class="text-sm font-bold uppercase tracking-[0.35em]" style="color: var(--theme-muted);">Admin</p>
-            <h2 class="mt-2 font-[Bebas_Neue] text-4xl uppercase tracking-[0.18em]">Manage FAQ</h2>
+            <h2 class="mt-2 font-bold font-[Fredoka] text-4xl">Manage FAQ</h2>
         </div>
 
         @if (session('status'))
             <p class="rounded-xl border px-4 py-3 text-sm" style="border-color: var(--theme-border); color: var(--theme-muted);">Done.</p>
         @endif
 
-        <form method="POST" action="{{ route('admin.faq.categories.store') }}" class="flex flex-wrap items-end gap-3 rounded-[1.75rem] border p-5" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border);">
+        <form method="POST" action="{{ route('admin.faq.categories.store') }}" class="flex flex-wrap items-end gap-3 rounded-tl-[1.75rem] rounded-tr-[1.75rem] rounded-br-[1.75rem] rounded-bl-md border p-5" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border);">
             @csrf
             <div class="flex-1 min-w-[200px]">
                 <x-input-label value="New category name" />
@@ -25,7 +25,7 @@
         </form>
 
         @foreach ($categories as $category)
-            <div class="rounded-[1.75rem] border p-6 space-y-4" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+            <div class="rounded-tl-[1.75rem] rounded-tr-[1.75rem] rounded-br-[1.75rem] rounded-bl-md border p-6 space-y-4" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
                 <div class="flex flex-wrap items-center justify-between gap-3">
                     <form method="POST" action="{{ route('admin.faq.categories.update', $category) }}" class="flex flex-wrap items-end gap-3">
                         @csrf

@@ -6,10 +6,10 @@
 
         <div>
             <p class="text-sm font-bold uppercase tracking-[0.35em]" style="color: var(--theme-muted);">Admin</p>
-            <h2 class="mt-2 font-[Bebas_Neue] text-4xl uppercase tracking-[0.18em]">Edit Article</h2>
+            <h2 class="mt-2 font-bold font-[Fredoka] text-4xl">Edit Article</h2>
         </div>
 
-        <form method="POST" action="{{ route('admin.news.update', $article) }}" enctype="multipart/form-data" class="space-y-5 rounded-[1.75rem] border p-6" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+        <form method="POST" action="{{ route('admin.news.update', $article) }}" enctype="multipart/form-data" class="space-y-5 rounded-tl-[1.75rem] rounded-tr-[1.75rem] rounded-br-[1.75rem] rounded-bl-md border p-6" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
             @method('PUT')
             @include('admin.news._form')
 
