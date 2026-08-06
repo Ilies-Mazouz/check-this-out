@@ -4,34 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class NewsArticle extends Model
+class FaqSuggestion extends Model
 {
     protected $fillable = [
         'user_id',
-        'title',
-        'slug',
-        'body',
-        'cover_image',
-        'source_url',
-        'published_at',
+        'question',
+        'resolved_at',
     ];
 
     protected function casts(): array
     {
         return [
-            'published_at' => 'datetime',
+            'resolved_at' => 'datetime',
         ];
     }
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function comments(): HasMany
-    {
-        return $this->hasMany(NewsComment::class);
     }
 }

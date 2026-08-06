@@ -25,5 +25,22 @@
                 <p style="color: var(--theme-muted);">No FAQ entries yet.</p>
             @endforelse
         </div>
+
+        <div class="mt-12 border-t pt-8" style="border-color: var(--theme-border);">
+            <h2 class="text-xl font-semibold">Don't see your question?</h2>
+
+            @auth
+                @if (session('status') === 'faq-suggestion-sent')
+                    <p class="mt-3 text-sm" style="color: var(--theme-accent);">Thanks — an admin will take a look.</p>
+                @endif
+                <form method="POST" action="{{ route('faq.suggestions.store') }}" class="mt-4 flex flex-col gap-3 sm:flex-row">
+                    @csrf
+                    <input type="text" name="question" required minlength="5" maxlength="500" placeholder="Suggest a question..." class="flex-1 rounded-xl border px-4 py-2 text-sm" style="border-color: var(--theme-border); background: color-mix(in srgb, var(--theme-surface) 92%, transparent); color: var(--theme-text);" />
+                    <x-primary-button>Suggest</x-primary-button>
+                </form>
+            @else
+                <p class="mt-3 text-sm" style="color: var(--theme-muted);"><a href="{{ route('login') }}" class="underline">Log in</a> to suggest a question for the FAQ.</p>
+            @endauth
+        </div>
     </div>
 @endsection

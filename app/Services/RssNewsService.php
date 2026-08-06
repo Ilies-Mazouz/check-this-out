@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\NewsArticle;
 use App\Models\User;
+use App\Support\ImageResizer;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -83,11 +84,41 @@ class RssNewsService
             'title' => $candidate['title'],
             'slug' => $this->uniqueSlug($candidate['title']),
             'body' => $candidate['body'],
+            'cover_image' => $this->downloadImage($candidate['image_url'] ?? null),
             'source_url' => $candidate['link'],
             'published_at' => $candidate['published_at'],
         ]);
 
         return true;
+    }
+
+    /**
+     * Download the article's own featured image (from the feed's
+     * media:thumbnail/media:content) and store it locally, resized like
+     * every other image on the site. Not every feed provides one (Anime
+     * News Network's RSS doesn't) — in that case the article simply has no
+     * cover image and falls back to the themed placeholder, rather than
+     * showing a photo that doesn't actually belong to the article.
+     */
+    private function downloadImage(?string $url): ?string
+    {
+        if (! $url) {
+            return null;
+        }
+
+        try {
+            $bytes = Http::timeout(10)
+                ->withUserAgent('Mozilla/5.0 (compatible; CheckThisOutBot/1.0)')
+                ->get($url)
+                ->throw()
+                ->body();
+
+            return ImageResizer::storeBytes($bytes, 'news');
+        } catch (Throwable $e) {
+            Log::warning('RSS article image download failed.', ['url' => $url, 'error' => $e->getMessage()]);
+
+            return null;
+        }
     }
 
     private function fetchItems(string $feedUrl): array
@@ -118,11 +149,41 @@ class RssNewsService
                 'title' => trim((string) $item->title),
                 'link' => trim((string) $item->link),
                 'body' => Str::limit($description, 1000, ''),
+                'image_url' => $this->extractImageUrl($item),
                 'published_at' => $this->parseDate((string) $item->pubDate),
             ];
         }
 
         return $items;
+    }
+
+    /**
+     * Pull the article's own featured image out of the feed item, via the
+     * Media RSS namespace (media:thumbnail, falling back to media:content).
+     * IGN and Variety both provide this; Anime News Network's feed doesn't
+     * include any image at all, so this returns null for those items.
+     */
+    private function extractImageUrl(SimpleXMLElement $item): ?string
+    {
+        $media = $item->children('http://search.yahoo.com/mrss/');
+
+        if (isset($media->thumbnail)) {
+            $url = (string) $media->thumbnail->attributes()->url;
+
+            if ($url !== '') {
+                return $url;
+            }
+        }
+
+        if (isset($media->content)) {
+            $url = (string) $media->content->attributes()->url;
+
+            if ($url !== '') {
+                return $url;
+            }
+        }
+
+        return null;
     }
 
     private function parseDate(string $pubDate): string

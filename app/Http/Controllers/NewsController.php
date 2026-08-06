@@ -25,6 +25,14 @@ class NewsController extends Controller
             404
         );
 
-        return view('news.show', ['article' => $news]);
+        $blockedIds = auth()->check() ? auth()->user()->blockedUsers()->pluck('users.id') : collect();
+
+        $comments = $news->comments()
+            ->with('user')
+            ->whereNotIn('user_id', $blockedIds)
+            ->latest()
+            ->get();
+
+        return view('news.show', ['article' => $news, 'comments' => $comments]);
     }
 }

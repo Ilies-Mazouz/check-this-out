@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ContactMessageController as AdminContactMessageController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
+use App\Http\Controllers\Admin\FaqSuggestionController as AdminFaqSuggestionController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\NewsImportController;
 use App\Http\Controllers\Admin\TitleController as AdminTitleController;
@@ -12,9 +13,11 @@ use App\Http\Controllers\BlockController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\FaqSuggestionController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\GamingEntryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NewsCommentController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationSettingController;
@@ -73,6 +76,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/{user}/block', [BlockController::class, 'store'])->name('users.block');
     Route::delete('/users/{user}/block', [BlockController::class, 'destroy'])->name('users.block.destroy');
 
+    Route::post('/news/{news:slug}/comments', [NewsCommentController::class, 'store'])->name('news.comments.store');
+    Route::delete('/news/{news:slug}/comments/{comment}', [NewsCommentController::class, 'destroy'])->name('news.comments.destroy');
+
+    Route::post('/faq/suggestions', [FaqSuggestionController::class, 'store'])->name('faq.suggestions.store');
+
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::patch('/notification-settings', [NotificationSettingController::class, 'update'])->name('notification-settings.update');
 
@@ -103,6 +111,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/faq/items', [AdminFaqController::class, 'storeItem'])->name('faq.items.store');
     Route::patch('/faq/items/{faqItem}', [AdminFaqController::class, 'updateItem'])->name('faq.items.update');
     Route::delete('/faq/items/{faqItem}', [AdminFaqController::class, 'destroyItem'])->name('faq.items.destroy');
+
+    Route::patch('/faq/suggestions/{faqSuggestion}/resolve', [AdminFaqSuggestionController::class, 'resolve'])->name('faq.suggestions.resolve');
+    Route::delete('/faq/suggestions/{faqSuggestion}', [AdminFaqSuggestionController::class, 'destroy'])->name('faq.suggestions.destroy');
 
     Route::get('/titles', [AdminTitleController::class, 'index'])->name('titles.index');
     Route::get('/titles/create', [AdminTitleController::class, 'create'])->name('titles.create');

@@ -64,6 +64,11 @@ class NewsSeeder extends Seeder
             ],
         ];
 
+        // These are illustrative/example articles (either about the site
+        // itself or generic fictional entertainment news), not real
+        // published pieces — so unlike RSS-imported articles, there is no
+        // genuine photo that actually belongs to any of them. Deliberately
+        // left without a cover_image; the themed placeholder covers it.
         foreach ($articles as $article) {
             NewsArticle::create([
                 'user_id' => $admin->id,

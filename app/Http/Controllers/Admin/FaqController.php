@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\FaqCategory;
 use App\Models\FaqItem;
+use App\Models\FaqSuggestion;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -17,7 +18,12 @@ class FaqController extends Controller
             ->orderBy('order')
             ->get();
 
-        return view('admin.faq.index', ['categories' => $categories]);
+        $suggestions = FaqSuggestion::with('user')
+            ->whereNull('resolved_at')
+            ->latest()
+            ->get();
+
+        return view('admin.faq.index', ['categories' => $categories, 'suggestions' => $suggestions]);
     }
 
     public function storeCategory(Request $request): RedirectResponse

@@ -11,6 +11,33 @@
             <p class="rounded-xl border px-4 py-3 text-sm" style="border-color: var(--theme-border); color: var(--theme-muted);">Done.</p>
         @endif
 
+        <div class="rounded-tl-[1.75rem] rounded-tr-[1.75rem] rounded-br-[1.75rem] rounded-bl-md border p-6" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
+            <h3 class="text-lg font-semibold">Suggested questions ({{ $suggestions->count() }})</h3>
+
+            @forelse ($suggestions as $suggestion)
+                <div class="mt-4 flex flex-wrap items-center justify-between gap-3 border-t pt-4" style="border-color: color-mix(in srgb, var(--theme-border) 70%, transparent);">
+                    <div>
+                        <p class="text-sm">{{ $suggestion->question }}</p>
+                        <p class="mt-1 text-xs" style="color: var(--theme-muted);">by {{ $suggestion->user->username }} &middot; {{ $suggestion->created_at->diffForHumans() }}</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <form method="POST" action="{{ route('admin.faq.suggestions.resolve', $suggestion) }}">
+                            @csrf
+                            @method('PATCH')
+                            <x-secondary-button>Mark handled</x-secondary-button>
+                        </form>
+                        <form method="POST" action="{{ route('admin.faq.suggestions.destroy', $suggestion) }}" onsubmit="return confirm('Delete this suggestion?');">
+                            @csrf
+                            @method('DELETE')
+                            <x-danger-button>Delete</x-danger-button>
+                        </form>
+                    </div>
+                </div>
+            @empty
+                <p class="mt-3 text-sm" style="color: var(--theme-muted);">No pending suggestions.</p>
+            @endforelse
+        </div>
+
         <form method="POST" action="{{ route('admin.faq.categories.store') }}" class="flex flex-wrap items-end gap-3 rounded-tl-[1.75rem] rounded-tr-[1.75rem] rounded-br-[1.75rem] rounded-bl-md border p-5" style="background: color-mix(in srgb, var(--theme-surface) 92%, transparent); border-color: var(--theme-border);">
             @csrf
             <div class="flex-1 min-w-[200px]">

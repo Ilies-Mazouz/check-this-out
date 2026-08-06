@@ -42,9 +42,18 @@ class ImageResizer
      */
     public static function resize(string $bytes, int $maxWidth = 800, int $quality = 78): string
     {
+        // Downloaded source images (RSS feeds especially) can be large
+        // full-resolution originals — GD needs roughly width*height*4 bytes
+        // per decoded image, which can exceed the default CLI memory_limit.
+        // Bumped only for this operation, then restored.
+        $previousLimit = ini_get('memory_limit');
+        ini_set('memory_limit', '512M');
+
         $source = @imagecreatefromstring($bytes);
 
         if ($source === false) {
+            ini_set('memory_limit', $previousLimit);
+
             return $bytes;
         }
 
@@ -65,6 +74,8 @@ class ImageResizer
         imagejpeg($source, null, $quality);
         $output = ob_get_clean();
         imagedestroy($source);
+
+        ini_set('memory_limit', $previousLimit);
 
         return $output ?: $bytes;
     }
