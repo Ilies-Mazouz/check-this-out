@@ -11,7 +11,7 @@ Gemaakt als examenproject voor het vak Laravel aan de Erasmushogeschool Brussel.
 Je hebt PHP ^8.3, Composer, Node/npm en SQLite-ondersteuning in PHP nodig.
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/Ilies-Mazouz/check-this-out.git
 cd check-this-out
 
 composer install
