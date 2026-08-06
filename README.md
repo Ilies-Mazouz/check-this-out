@@ -114,3 +114,8 @@ Laravel 13, Blade + Laravel Breeze voor authenticatie, Tailwind + Vite, een beet
 - Games: [IGDB](https://www.igdb.com/), geauthenticeerd via Twitch's OAuth (toegang tot IGDB loopt via een Twitch developer-app, niet via IGDB zelf).
 - Nieuws: publieke RSS-feeds (IGN, Anime News Network, Variety) — elk geïmporteerd artikel linkt terug naar de originele bron.
 - Laravel, Breeze, Tailwind en Alpine.js zijn gebruikt volgens hun standaard documentatie. Er is geen tutorial-code gekopieerd — de import/dedup-logica van de catalogus, het threading-model van reviews, het themasysteem en de import-UI zijn specifiek voor dit project geschreven.
+
+## Met dank aan
+
+- De Laravel-documentatie, voor duidelijke uitleg bij het framework.
+- Claude Code (Anthropic) — gebruikt voor delen van de ontwikkeling en uitwerking.
