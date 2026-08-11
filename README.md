@@ -75,8 +75,10 @@ Mail staat standaard op `MAIL_MAILER=log`, dus berichten van het contactformulie
 - Community title-inzendingen, met goedkeuring door admin en een notificatie in beide gevallen
 - Watchlist en gaming-lijst bijhouden
 - Threaded reviews met een optionele score van 1 tot 5 sterren, likes, en notificaties bij reacties
-- Favorieten, gebruikers blokkeren, notificatie-voorkeuren
-- Automatische nieuws-import via RSS-feeds
+- Reacties op nieuwsartikelen
+- Gebruikers kunnen zelf een FAQ-vraag voorstellen; admins behandelen die in een review-wachtrij
+- Favorieten, gebruikers blokkeren (geldt ook voor nieuwscomments), notificatie-voorkeuren
+- Automatische nieuws-import via RSS-feeds, met een echte afbeelding per artikel waar de bron dat aanbiedt
 - Een volledig admin-paneel: nieuws, FAQ, titels, gebruikers, contactberichten, live dashboard-statistieken
 - Twee kleurthema's, elk met een lichte en donkere modus
 
