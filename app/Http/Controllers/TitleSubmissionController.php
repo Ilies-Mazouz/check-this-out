@@ -73,6 +73,7 @@ class TitleSubmissionController extends Controller
 
         $apiSource = 'manual';
         $apiId = null;
+        $sourceSlug = null;
         $titleName = $validated['title'];
         $synopsis = $validated['synopsis'] ?? null;
         $releaseDate = $validated['release_date'] ?? null;
@@ -81,6 +82,7 @@ class TitleSubmissionController extends Controller
         if ($imported = $this->importExternalTitle($validated['type'], $validated['external_id'] ?? null, $tmdb, $aniList, $igdb)) {
             $apiSource = $imported['source'];
             $apiId = $validated['external_id'];
+            $sourceSlug = $imported['slug'] ?? null;
             $titleName = $imported['title'];
             $synopsis = $imported['synopsis'];
             $releaseDate = $imported['release_date'];
@@ -90,6 +92,7 @@ class TitleSubmissionController extends Controller
         $title = new Title([
             'api_source' => $apiSource,
             'api_id' => $apiId,
+            'source_slug' => $sourceSlug,
             'type' => $validated['type'],
             'title' => $titleName,
             'synopsis' => $synopsis,

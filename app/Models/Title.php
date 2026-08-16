@@ -12,6 +12,7 @@ class Title extends Model
     protected $fillable = [
         'api_source',
         'api_id',
+        'source_slug',
         'type',
         'title',
         'slug',
@@ -87,8 +88,7 @@ class Title extends Model
                 ? "https://www.themoviedb.org/movie/{$this->api_id}"
                 : "https://www.themoviedb.org/tv/{$this->api_id}",
             'anilist' => "https://anilist.co/anime/{$this->api_id}",
-            // IGDB's public site is keyed by slug, not the numeric API id we
-            // store — no reliable link to build without an extra API call.
+            'igdb' => $this->source_slug ? "https://www.igdb.com/games/{$this->source_slug}" : null,
             default => null,
         };
     }

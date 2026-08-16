@@ -88,7 +88,7 @@ class IgdbService
     public function import(string $id): array
     {
         $response = $this->query('/games', <<<APICALYPSE
-            fields name,cover.url,first_release_date,summary,genres.name;
+            fields name,slug,cover.url,first_release_date,summary,genres.name;
             where id = {$id};
             APICALYPSE
         );
@@ -101,6 +101,7 @@ class IgdbService
 
         return [
             'title' => $game['name'],
+            'slug' => $game['slug'] ?? null,
             'synopsis' => $game['summary'] ?? null,
             'release_date' => isset($game['first_release_date']) ? date('Y-m-d', $game['first_release_date']) : null,
             'cover_image' => $this->downloadCover($game['cover']['url'] ?? null),

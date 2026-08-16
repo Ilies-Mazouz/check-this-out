@@ -116,6 +116,7 @@ class TitleImportService
         $title = Title::create([
             'api_source' => $candidate['source'],
             'api_id' => $candidate['external_id'],
+            'source_slug' => $imported['slug'] ?? null,
             'type' => $candidate['type'],
             'title' => $imported['title'],
             'slug' => $this->uniqueSlug($imported['title']),
