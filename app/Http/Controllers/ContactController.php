@@ -26,7 +26,7 @@ class ContactController extends Controller
             'body' => ['required', 'string', 'max:5000'],
         ]);
 
-        $contactMessage = ContactMessage::create($validated);
+        $contactMessage = ContactMessage::create($validated + ['user_id' => $request->user()?->id]);
 
         $adminEmails = User::where('is_admin', true)->pluck('email');
 
@@ -35,5 +35,19 @@ class ContactController extends Controller
         }
 
         return redirect()->route('contact')->with('status', 'contact-sent');
+    }
+
+    public function myMessages(Request $request): View
+    {
+        $messages = $request->user()->contactMessages()->latest()->paginate(15);
+
+        return view('contact.my-messages', ['messages' => $messages]);
+    }
+
+    public function show(Request $request, ContactMessage $contactMessage): View
+    {
+        abort_unless($contactMessage->user_id === $request->user()->id, 403);
+
+        return view('contact.show', ['message' => $contactMessage]);
     }
 }

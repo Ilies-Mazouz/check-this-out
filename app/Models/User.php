@@ -73,6 +73,11 @@ class User extends Authenticatable
         return $this->hasMany(NewsArticle::class);
     }
 
+    public function contactMessages(): HasMany
+    {
+        return $this->hasMany(ContactMessage::class);
+    }
+
     public function blockedUsers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'blocked_users', 'user_id', 'blocked_user_id');

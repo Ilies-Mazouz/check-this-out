@@ -6,6 +6,10 @@
         <h1 class="mt-2 font-bold font-[Fredoka] text-5xl">Contact</h1>
         <p class="mt-4 text-lg" style="color: var(--theme-muted);">Questions, feedback, or a title you want added? Send us a message.</p>
 
+        @auth
+            <a href="{{ route('contact.messages.index') }}" class="mt-3 inline-block text-sm font-semibold underline" style="color: var(--theme-accent);">View your past messages &amp; answers &rarr;</a>
+        @endauth
+
         @if (session('status') === 'contact-sent')
             <p class="mt-6 rounded-xl border px-4 py-3 text-sm" style="border-color: var(--theme-accent); color: var(--theme-accent);">Thanks! Your message has been sent.</p>
         @endif

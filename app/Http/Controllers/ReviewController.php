@@ -23,6 +23,7 @@ class ReviewController extends Controller
         if (! empty($validated['parent_id'])) {
             $parent = Review::findOrFail($validated['parent_id']);
             abort_unless($parent->title_id === $title->id, 404);
+            abort_if($parent->user->hasBlocked($request->user()), 403, 'This user has blocked you.');
         }
 
         if ($parent) {

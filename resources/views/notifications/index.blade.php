@@ -21,6 +21,9 @@
                         @case('review_reply')
                             <p><span class="font-semibold">{{ $notification->data['from_username'] }}</span> replied to your review on <a href="{{ route('titles.show', ['title' => $notification->data['title_slug']]) }}" class="font-semibold hover:underline">{{ $notification->data['title_name'] }}</a>.</p>
                             @break
+                        @case('contact_reply')
+                            <p>You got an answer to your message <a href="{{ route('contact.messages.show', $notification->data['contact_message_id']) }}" class="font-semibold hover:underline">"{{ $notification->data['subject'] }}"</a>.</p>
+                            @break
                         @default
                             <p>{{ $notification->type }}</p>
                     @endswitch

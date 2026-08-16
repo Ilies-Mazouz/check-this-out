@@ -19,6 +19,7 @@
                 <h2 class="text-lg font-medium">Notification Preferences</h2>
                 <form method="POST" action="{{ route('notification-settings.update') }}" class="mt-4 space-y-4">
                     @csrf
+                    @method('PATCH')
                     <label class="flex items-center gap-3 text-sm font-medium">
                         <input type="checkbox" name="notify_on_review_reply" value="1" class="rounded" {{ ($user->notificationSetting->notify_on_review_reply ?? true) ? 'checked' : '' }} />
                         Notify me when someone replies to my reviews

@@ -34,7 +34,7 @@
         @endauth
 
         @auth
-            @if ($review->depth < 3)
+            @if ($review->depth < 3 && ! $review->user->hasBlocked(auth()->user()))
                 <button type="button" class="font-semibold" style="color: var(--theme-accent);" @click="replyTo === {{ $review->id }} ? replyTo = null : replyTo = {{ $review->id }}">Reply</button>
             @endif
         @endauth
@@ -49,7 +49,7 @@
     </div>
 
     @auth
-        @if ($review->depth < 3)
+        @if ($review->depth < 3 && ! $review->user->hasBlocked(auth()->user()))
             <form method="POST" action="{{ route('titles.reviews.store', $title) }}" class="mt-3" x-show="replyTo === {{ $review->id }}" x-transition>
                 @csrf
                 <input type="hidden" name="parent_id" value="{{ $review->id }}" />

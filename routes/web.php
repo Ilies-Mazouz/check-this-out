@@ -69,6 +69,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/catalogue/{title:slug}/favourite', [FavouriteController::class, 'store'])->name('titles.favourite.store');
     Route::delete('/catalogue/{title:slug}/favourite', [FavouriteController::class, 'destroy'])->name('titles.favourite.destroy');
 
+    Route::get('/contact/messages', [ContactController::class, 'myMessages'])->name('contact.messages.index');
+    Route::get('/contact/messages/{contactMessage}', [ContactController::class, 'show'])->name('contact.messages.show');
+
     Route::get('/my/lists', [MyListsController::class, 'index'])->name('lists.index');
     Route::get('/my/watchlist', [WatchlistController::class, 'mine'])->name('watchlist.mine');
     Route::get('/my/gaming-list', [GamingEntryController::class, 'mine'])->name('gaming.mine');
@@ -135,6 +138,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::get('/contact-messages', [AdminContactMessageController::class, 'index'])->name('contact-messages.index');
     Route::patch('/contact-messages/{contactMessage}/toggle-read', [AdminContactMessageController::class, 'toggleRead'])->name('contact-messages.toggle-read');
+    Route::post('/contact-messages/{contactMessage}/reply', [AdminContactMessageController::class, 'reply'])->name('contact-messages.reply');
     Route::delete('/contact-messages/{contactMessage}', [AdminContactMessageController::class, 'destroy'])->name('contact-messages.destroy');
 });
 

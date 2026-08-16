@@ -24,7 +24,7 @@
                         <form method="POST" action="{{ route('admin.faq.suggestions.resolve', $suggestion) }}">
                             @csrf
                             @method('PATCH')
-                            <x-secondary-button>Mark handled</x-secondary-button>
+                            <x-secondary-button type="submit">Mark handled</x-secondary-button>
                         </form>
                         <form method="POST" action="{{ route('admin.faq.suggestions.destroy', $suggestion) }}" onsubmit="return confirm('Delete this suggestion?');">
                             @csrf
@@ -65,7 +65,7 @@
                             <x-input-label value="Order" />
                             <x-text-input name="order" type="number" class="mt-1 block w-full" value="{{ $category->order }}" />
                         </div>
-                        <x-secondary-button>Save</x-secondary-button>
+                        <x-secondary-button type="submit">Save</x-secondary-button>
                     </form>
                     <form method="POST" action="{{ route('admin.faq.categories.destroy', $category) }}" onsubmit="return confirm('Delete this category and all its questions?');">
                         @csrf
@@ -86,7 +86,7 @@
                                 <textarea name="answer" rows="2" class="block w-full rounded-xl border px-3 py-2 text-sm" style="border-color: var(--theme-border); background: color-mix(in srgb, var(--theme-surface) 92%, transparent); color: var(--theme-text);" required>{{ $item->answer }}</textarea>
                                 <div class="flex items-center gap-3">
                                     <input type="number" name="order" value="{{ $item->order }}" class="w-20 rounded-xl border px-3 py-2 text-sm" style="border-color: var(--theme-border); background: color-mix(in srgb, var(--theme-surface) 92%, transparent); color: var(--theme-text);" />
-                                    <x-secondary-button>Save</x-secondary-button>
+                                    <x-secondary-button type="submit">Save</x-secondary-button>
                                 </div>
                             </form>
                             <form method="POST" action="{{ route('admin.faq.items.destroy', $item) }}" onsubmit="return confirm('Delete this question?');">
