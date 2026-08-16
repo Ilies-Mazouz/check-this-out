@@ -65,4 +65,14 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index')->with('status', 'user-updated');
     }
+
+    public function destroy(User $user): RedirectResponse
+    {
+        abort_if($user->id === auth()->id(), 403, 'You cannot delete your own account.');
+        abort_if($user->is_master_admin, 403, 'The master admin account cannot be deleted.');
+
+        $user->delete();
+
+        return redirect()->route('admin.users.index')->with('status', 'user-deleted');
+    }
 }

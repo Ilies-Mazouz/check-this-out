@@ -131,6 +131,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
     Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
     Route::patch('/users/{user}/toggle-admin', [AdminUserController::class, 'toggleAdmin'])->name('users.toggle-admin');
+    Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
 
     Route::get('/contact-messages', [AdminContactMessageController::class, 'index'])->name('contact-messages.index');
     Route::patch('/contact-messages/{contactMessage}/toggle-read', [AdminContactMessageController::class, 'toggleRead'])->name('contact-messages.toggle-read');

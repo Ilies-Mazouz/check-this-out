@@ -14,6 +14,8 @@
             <p class="rounded-xl border px-4 py-3 text-sm" style="border-color: var(--theme-border); color: var(--theme-muted);">User updated.</p>
         @elseif (session('status') === 'user-created')
             <p class="rounded-xl border px-4 py-3 text-sm" style="border-color: var(--theme-border); color: var(--theme-muted);">User created.</p>
+        @elseif (session('status') === 'user-deleted')
+            <p class="rounded-xl border px-4 py-3 text-sm" style="border-color: var(--theme-border); color: var(--theme-muted);">User deleted.</p>
         @endif
 
         <form method="GET" action="{{ route('admin.users.index') }}" class="flex gap-3">
@@ -53,13 +55,22 @@
                                 @if ($user->is_master_admin)
                                     <span class="text-xs" style="color: var(--theme-muted);">Protected</span>
                                 @elseif ($user->id !== auth()->id())
-                                    <form method="POST" action="{{ route('admin.users.toggle-admin', $user) }}">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="rounded-xl border px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.04em] transition-all duration-300" style="border-color: var(--theme-border);">
-                                            {{ $user->is_admin ? 'Revoke admin' : 'Make admin' }}
-                                        </button>
-                                    </form>
+                                    <div class="flex items-center justify-end gap-2">
+                                        <form method="POST" action="{{ route('admin.users.toggle-admin', $user) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="rounded-xl border px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.04em] transition-all duration-300" style="border-color: var(--theme-border);">
+                                                {{ $user->is_admin ? 'Revoke admin' : 'Make admin' }}
+                                            </button>
+                                        </form>
+                                        <form method="POST" action="{{ route('admin.users.destroy', $user) }}" onsubmit="return confirm('Permanently delete {{ $user->username }}? This removes their account, reviews, lists, and all other data. This cannot be undone.');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="rounded-xl border px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.04em] transition-all duration-300" style="border-color: #ef4444; color: #ef4444;">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
                                 @else
                                     <span class="text-xs" style="color: var(--theme-muted);">(you)</span>
                                 @endif
