@@ -13,8 +13,9 @@ class GamingEntryController extends Controller
     public function mine(Request $request): View
     {
         $entries = $request->user()->gamingEntries()->with('title')->latest()->get()->groupBy('status');
+        $favouriteIds = $request->user()->favourites()->pluck('titles.id');
 
-        return view('lists.gaming', ['entries' => $entries]);
+        return view('lists.gaming', ['entries' => $entries, 'favouriteIds' => $favouriteIds]);
     }
 
     public function update(Request $request, Title $title): RedirectResponse

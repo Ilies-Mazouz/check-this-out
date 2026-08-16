@@ -79,7 +79,7 @@
         <div class="theme-shell min-h-screen flex flex-col">
             <header class="sticky top-0 z-50 h-16 border-b" style="background: var(--theme-navbar); border-color: color-mix(in srgb, var(--theme-accent) 20%, transparent); backdrop-filter: blur(12px);">
                 <div class="mx-auto flex h-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-                    <a href="{{ auth()->check() ? route('dashboard') : url('/') }}" class="shrink-0 font-bold font-['Fredoka'] text-[1.8rem] leading-none text-[color:var(--theme-accent)] logo-glow">
+                    <a href="{{ route('home') }}" class="shrink-0 font-bold font-['Fredoka'] text-[1.8rem] leading-none text-[color:var(--theme-accent)] logo-glow">
                         Check This Out
                     </a>
 
@@ -135,6 +135,10 @@
                             </a>
                         @else
                             <div class="hidden items-center gap-3 md:flex">
+                                <a href="{{ route('lists.index') }}" class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-300 hover:bg-[color:var(--theme-accent)]/10" aria-label="My Lists">
+                                    <x-icon name="list" class="h-5 w-5" />
+                                </a>
+
                                 <a href="{{ route('notifications.index') }}" class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-300 hover:bg-[color:var(--theme-accent)]/10" aria-label="Notifications">
                                     <x-icon name="bell" class="h-5 w-5" />
                                     @php $unreadCount = auth()->user()->notifications()->whereNull('read_at')->count(); @endphp

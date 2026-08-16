@@ -3,16 +3,22 @@
 @section('content')
     <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div class="rounded-tl-[2rem] rounded-tr-[2rem] rounded-br-[2rem] rounded-bl-md border p-8 sm:p-14" style="background: color-mix(in srgb, var(--theme-surface) 94%, transparent); border-color: var(--theme-border); box-shadow: var(--theme-glow);">
-            <p class="text-sm font-bold uppercase tracking-[0.35em]" style="color: var(--theme-muted);">Movies · Series · Anime · Games</p>
-            <h1 class="mt-4 max-w-3xl font-bold font-[Fredoka] text-6xl leading-[0.95]">Find your next obsession.</h1>
-            <p class="mt-6 max-w-2xl text-lg leading-8" style="color: var(--theme-muted);">Track what you're watching and playing, rate and review titles, and see what the community is loving right now.</p>
+            @guest
+                <p class="text-sm font-bold uppercase tracking-[0.35em]" style="color: var(--theme-muted);">Movies · Series · Anime · Games</p>
+                <h1 class="mt-4 max-w-3xl font-bold font-[Fredoka] text-6xl leading-[0.95]">Find your next obsession.</h1>
+                <p class="mt-6 max-w-2xl text-lg leading-8" style="color: var(--theme-muted);">Track what you're watching and playing, rate and review titles, and see what the community is loving right now.</p>
+            @else
+                <p class="text-sm font-bold uppercase tracking-[0.35em]" style="color: var(--theme-muted);">Welcome back</p>
+                <h1 class="mt-4 max-w-3xl font-bold font-[Fredoka] text-6xl leading-[0.95]">Welcome back, {{ auth()->user()->username }}!</h1>
+                <p class="mt-6 max-w-2xl text-lg leading-8" style="color: var(--theme-muted);">Pick up where you left off — your lists are one click away in the navbar. Here's what's trending and new right now.</p>
+            @endguest
 
             <div class="mt-8 flex flex-wrap items-center gap-4">
                 @guest
                     <a href="{{ route('register') }}" class="inline-flex h-12 items-center rounded-tl-xl rounded-tr-xl rounded-br-xl rounded-bl-md px-6 text-sm font-semibold transition-all duration-300 hover:-rotate-1 hover:scale-105" style="background: var(--theme-accent); color: var(--theme-bg);">Get Started</a>
                     <a href="{{ route('login') }}" class="inline-flex h-12 items-center rounded-tl-xl rounded-tr-xl rounded-br-xl rounded-bl-md border px-6 text-sm font-semibold transition-all duration-300 hover:bg-[color:var(--theme-accent)] hover:text-[color:var(--theme-bg)]" style="border-color: var(--theme-accent); color: var(--theme-accent);">Sign In</a>
                 @else
-                    <a href="{{ route('dashboard') }}" class="inline-flex h-12 items-center rounded-tl-xl rounded-tr-xl rounded-br-xl rounded-bl-md px-6 text-sm font-semibold transition-all duration-300 hover:-rotate-1 hover:scale-105" style="background: var(--theme-accent); color: var(--theme-bg);">Go to Dashboard</a>
+                    <a href="{{ route('titles.submit') }}" class="inline-flex h-12 items-center rounded-tl-xl rounded-tr-xl rounded-br-xl rounded-bl-md px-6 text-sm font-semibold transition-all duration-300 hover:-rotate-1 hover:scale-105" style="background: var(--theme-accent); color: var(--theme-bg);">Submit a Title</a>
                 @endguest
                 <a href="{{ route('catalogue') }}" class="inline-flex h-12 items-center rounded-tl-xl rounded-tr-xl rounded-br-xl rounded-bl-md border px-6 text-sm font-semibold transition-all duration-300 hover:bg-[color:var(--theme-accent)] hover:text-[color:var(--theme-bg)]" style="border-color: var(--theme-border); color: var(--theme-text);">Browse Catalogue</a>
 

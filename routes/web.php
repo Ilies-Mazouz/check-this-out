@@ -11,12 +11,12 @@ use App\Http\Controllers\Admin\TitleImportController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\BlockController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FaqSuggestionController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\GamingEntryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MyListsController;
 use App\Http\Controllers\NewsCommentController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NotificationController;
@@ -41,7 +41,7 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 
 Route::get('/u/{user:username}', [ProfileController::class, 'show'])->name('profile.show');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 // Catalogue (public browse, auth-gated actions)
 Route::get('/catalogue', [TitleController::class, 'index'])->name('catalogue');
@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/catalogue/{title:slug}/favourite', [FavouriteController::class, 'store'])->name('titles.favourite.store');
     Route::delete('/catalogue/{title:slug}/favourite', [FavouriteController::class, 'destroy'])->name('titles.favourite.destroy');
 
+    Route::get('/my/lists', [MyListsController::class, 'index'])->name('lists.index');
     Route::get('/my/watchlist', [WatchlistController::class, 'mine'])->name('watchlist.mine');
     Route::get('/my/gaming-list', [GamingEntryController::class, 'mine'])->name('gaming.mine');
     Route::get('/my/favourites', [FavouriteController::class, 'mine'])->name('favourites.mine');
