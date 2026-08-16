@@ -57,7 +57,19 @@ TWITCH_CLIENT_SECRET=
 # AniList (anime) is publiek en heeft geen key nodig.
 ```
 
-Mail staat standaard op `MAIL_MAILER=log`, dus berichten van het contactformulier komen in `storage/logs/laravel.log` terecht in plaats van echt verstuurd te worden — geen mailserver nodig om het te testen.
+Mail staat standaard op `MAIL_MAILER=log`, dus alle uitgaande mail — het contactformulier naar de admin, én de wachtwoord-reset-link — komt in `storage/logs/laravel.log` terecht in plaats van echt verstuurd te worden. Geen mailserver nodig om te testen: gebruik je "wachtwoord vergeten", zoek dan gewoon de meest recente `reset-password`-link op in dat logbestand en open die in je browser.
+
+Wil je echte mails ontvangen (bv. tijdens het opnemen van de screencast), zet dan `MAIL_MAILER=smtp` en vul je eigen SMTP-gegevens in — bijvoorbeeld met Gmail (via een [app-wachtwoord](https://myaccount.google.com/apppasswords), niet je normale wachtwoord):
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=jouw-adres@gmail.com
+MAIL_PASSWORD=je-app-wachtwoord
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=jouw-adres@gmail.com
+```
 
 ---
 
